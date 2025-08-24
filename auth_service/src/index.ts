@@ -1,7 +1,7 @@
 import express, { Request, Response } from "express";
-
+import dbConnnection from "./utils/db"
 const app = express();
-
+dbConnnection();
 const Port = 3000
 
 app.get("/", (req : Request, res : Response)=>{
