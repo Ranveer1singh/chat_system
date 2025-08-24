@@ -10,6 +10,7 @@ class UserController {
       const user = await userService.createUser(data);
       res.status(201).json({ success: true, data: user });
     } catch (error: any) {
+        console.log(error)
       res.status(400).json({ success: false, message: error.message });
     }
   }

@@ -4,7 +4,7 @@ import { userController } from "../controllers/user.controller";
 const userRouter = Router();
 
 // Create user
-userRouter.post("/", (req, res) => userController.create(req, res));
+userRouter.post("/",  userController.create);
 
 // Update user
 userRouter.put("/:id", (req, res) => userController.update(req, res));

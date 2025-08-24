@@ -1,10 +1,15 @@
 import UserModel from "../models/User.Model";
+import bcrypt from "bcrypt";
 import { ICreateUser } from "../schemas/userSchemas.dto";
+import { accessToken } from "../utils/accessToken";
 
 class UserService {
   async createUser(data: ICreateUser) {
-    const user = new UserModel(data);
-    return await user.save();
+    const hashedPassword = await bcrypt.hash(data.password, 10);
+    const user = new UserModel({...data, password : hashedPassword});
+    await user.save()
+    const token =  accessToken(user)
+    return  token;
   }
 
   async updateUser(id: string, data: any) {

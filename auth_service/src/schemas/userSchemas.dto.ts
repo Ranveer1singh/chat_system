@@ -17,7 +17,7 @@ export const UserSchema = z.object({
 });
 
 // ✅ Schema for creating a new user (omit _id)
-export const CreateUserSchema = UserSchema.omit({ _id: true });
+export const CreateUserSchema = UserSchema.omit({ _id: true, isActive: true, role: true });
 
 // ✅ TypeScript types inferred from Zod schemas
 export type IUser = z.infer<typeof UserSchema>;
