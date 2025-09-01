@@ -1,4 +1,5 @@
 import mongoose, { Document, Schema } from "mongoose";
+import { Role } from "../schemas/userSchemas.dto";
 
 // 1. Define the interface
 export interface IUser extends Document {
@@ -6,7 +7,7 @@ export interface IUser extends Document {
   userName: string;
   password: string;
   isActive: boolean;
-  role: string;   // use lowercase for consistency
+  role: Role;   // use lowercase for consistency
 }
 
 // 2. Define the schema
@@ -32,9 +33,9 @@ const userSchema: Schema<IUser> = new mongoose.Schema(
       default: true,
     },
     role: {
-      type: String,
-      enum: ["admin", "user"], // optional - define your roles
-      default: "user",
+       type: String,
+    enum: Object.values(Role),
+    default: Role.USER,
     },
   },
   { timestamps: true } // adds createdAt & updatedAt

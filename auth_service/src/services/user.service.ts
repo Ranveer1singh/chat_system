@@ -1,14 +1,22 @@
 import UserModel from "../models/User.Model";
 import bcrypt from "bcrypt";
-import { ICreateUser } from "../schemas/userSchemas.dto";
+import { ICreateUser, Role } from "../schemas/userSchemas.dto";
 import { accessToken } from "../utils/accessToken";
+import { exit } from "process";
 
 class UserService {
   async createUser(data: ICreateUser) {
     const hashedPassword = await bcrypt.hash(data.password, 10);
     const user = new UserModel({...data, password : hashedPassword});
     await user.save()
-    const token =  accessToken(user)
+    const token =  accessToken(
+      {
+        fullName : user.fullName,
+        userName : user.userName,
+        role : user.role
+      }
+
+    )
     return  token;
   }
 
@@ -25,6 +33,25 @@ class UserService {
 
   async getUserById(id: string) {
     return await UserModel.findById(id);
+  }
+
+  async login(body : any){
+try {
+  const {userName , password} = body;
+  const exitsUser = await UserModel.findOne({userName})
+if(!exitsUser) throw new Error("User name is not valid")
+
+  const isMatch = bcrypt.compare(password, exitsUser.password)
+  if(!isMatch) throw new Error("Invaild credentials")
+    const token = accessToken({
+  fullName : exitsUser.fullName,
+  userName : exitsUser.userName,
+  role : exitsUser.role
+    })
+    return token;
+} catch (error) {
+  
+}
   }
 }
 

@@ -52,6 +52,26 @@ class UserController {
       res.status(400).json({ success: false, message: error.message });
     }
   }
+  async login(req: Request, res: Response) {
+    try {
+      const { id } = req.params;
+      const token = await userService.login(req.body);
+      
+      res.status(200).json({ success: true , token });
+    } catch (error: any) {
+      res.status(400).json({ success: false, message: error.message });
+    }
+  }
+  async loginUser(req: Request, res: Response) {
+    try {
+      const { user } = req as any;
+     
+        console.log(user)
+      res.status(200).json({ success: true , user });
+    } catch (error: any) {
+      res.status(400).json({ success: false, message: error.message });
+    }
+  }
 }
 
 export const userController = new UserController();
