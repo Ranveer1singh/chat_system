@@ -1,16 +1,12 @@
-import express, { Request, Response } from "express";
-import dbConnnection from "./utils/db"
-import appRouter from "./routes";
-import "dotenv/config"
-
-const app = express();
-dbConnnection();
-const Port = 3000
-app.use(express.json())
-app.use(express.urlencoded({ extended: true }))
-app.use('/api', appRouter)
+import Server from "./utils/server";
 
 
-app.listen(Port , ()=>{
-    console.log("server is running on port 3000s")
-})
+class AuthApplication{
+    public run():void{
+        const server = new Server()
+        server.start()
+    }
+}
+
+const authApplication = new AuthApplication
+authApplication.run()
