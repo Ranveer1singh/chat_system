@@ -1,7 +1,7 @@
 import express from "express";
-
+import db from "./utils/db"
 const app = express();
-
+db()
 
 const port = 3001;
 
