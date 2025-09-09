@@ -22,7 +22,7 @@ export interface IMessage {
     sizeBytes?: number;
     mimeType?: string;
   }[];
-  readBy: IReadReceipt[];                 // Per-user read receipts (esp. for groups)
+  readBy?: IReadReceipt[];                 // Per-user read receipts (esp. for groups)
   createdAt?: Date;
   updatedAt?: Date;
 }

@@ -16,7 +16,7 @@ export const UserSchema = z.object({
   role: z.nativeEnum(Role), 
 });
 export const AuthUser = z.object({
-  // _id : z.string(),
+  // _id : z.string() ,
   fullName: z.string(),
   userName: z.string(),
   role: z.nativeEnum(Role), 
