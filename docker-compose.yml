@@ -27,7 +27,7 @@ services:
 
   # Auth Service
   auth_service:
-    build: ./auth
+    build: ./auth_service
     ports:
       - "3000:5000"
     depends_on:
@@ -38,7 +38,7 @@ services:
 
   # Chat Service
   chat_service:
-    build: ./chat
+    build: ./chat_service
     ports:
       - "3001:5001"
     depends_on:
