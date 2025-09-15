@@ -2,7 +2,7 @@ import express, { Application, Request, Response } from "express";
 import dbConnnection from "./db"
 import appRouter from "../routes";
 import "dotenv/config"
-
+import { createProducer } from "../kafka/producer";
 const app = express();
 dbConnnection();
 
@@ -11,10 +11,11 @@ class Server{
     constructor(){
         this.app = express()
     }
-    public start():void{
+    public async start():Promise<void>{
        this.setupMiddleware();
        this.setupRoute();
        this.listenServer()
+       await createProducer();
 
     }
        private setupMiddleware():void{
