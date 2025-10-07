@@ -6,9 +6,9 @@ import { AuthenticatedSocket, authenticateSocket } from "./middleware/authentica
 let io: Server | null = null;
 let httpServer: HttpServer | null = null;
 
-export const initSocket = (app: Application): void => {
+export const initSocket = (server: HttpServer): void => {
   // Create HTTP server from express app
-  httpServer = http.createServer(app);
+  httpServer = http.createServer(server);
 
   io = new Server(httpServer, {
     cors: {
@@ -25,9 +25,6 @@ export const initSocket = (app: Application): void => {
     });
   });
 
-  httpServer.listen(4000, () => {
-    console.log("Socket server running on 4000");
-  });
 };
 
 // Export for other files to emit events

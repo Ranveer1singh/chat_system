@@ -1,18 +1,17 @@
 import { Kafka } from "kafkajs";
-
 // 1. Create Kafka client
 const kafka = new Kafka({
-  clientId: "socket-service", // identify this service
+  clientId: "socket-service",
   brokers: [process.env.KAFKA_BROKER || "localhost:9092"], // from .env
 });
 
 // 2. Create a consumer (give groupId)
-const consumer = kafka.consumer({ groupId: "socket-service-group" });
+const consumer = kafka.consumer({ groupId: "chat-group-dev-" });
 
 export const startConsumer  = async () => {
   // 3. Connect
   await consumer.connect();
-  console.log("✅ Kafka Consumer connected");
+  console.log("✅ Kafka Consumer connected 1");
 
   // 4. Subscribe to topic
   await consumer.subscribe({ topic: "chat-messages", fromBeginning: true });
