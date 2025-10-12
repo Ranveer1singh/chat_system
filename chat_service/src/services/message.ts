@@ -21,7 +21,6 @@ class MessageService {
       attachments: attachments ?? [],
       readBy: [],
     });
-    console.log("heeo 1")
 
     const savedMessage = await messageDoc.save();
     await produceChatMessage({
@@ -33,7 +32,6 @@ class MessageService {
       attachments: savedMessage.attachments,
       createdAt: savedMessage.createdAt,
     });
-    console.log("heeo")
     return savedMessage
 
   }

@@ -3,6 +3,7 @@ import express from "express";
 import { createServer } from "http";
 import { startConsumer } from "./kafka/consumer";
 import { initSocket } from "./socket";
+import { error } from "console";
 
 const app = express();
 const httpServer = createServer(app);
@@ -13,7 +14,7 @@ httpServer.listen(PORT, async () => {
   initSocket(httpServer);
 
   try {
-    await startConsumer();
+    await startConsumer().catch(console.error);
   } catch (err) {
     console.error("❌ Kafka consumer failed:", err);
   }
