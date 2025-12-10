@@ -1,28 +1,28 @@
-import { Server, Socket } from "socket.io";
-import http, { Server as HttpServer } from "http";
-import { AuthenticatedSocket, authenticateSocket } from "./middleware/authenticate";
+import { Server } from "socket.io";
+import { Server as HttpServer } from "http";
+import { authenticateSocket, AuthenticatedSocket } from "./middleware/authenticate";
 
 let io: Server | null = null;
-let httpServer: HttpServer | null = null;
 
-export const initSocket = (server: HttpServer): void => {
-  httpServer = http.createServer(server);
-
+export const initSocket = (httpServer: HttpServer): void => {
   io = new Server(httpServer, {
     cors: {
       origin: "*",
+      methods: ["GET", "POST"]
     },
   });
+
+  
   io.use(authenticateSocket);
-
- io.on("connection", (socket: AuthenticatedSocket) => {
+  
+  io.on("connection", (socket: AuthenticatedSocket) => {
     console.log("✅ Client connected:", socket.id, "User:", socket.user);
-
+    
     socket.on("disconnect", () => {
       console.log("❌ Client disconnected:", socket.id);
     });
   });
-
+ 
 };
 
 export const getIO = (): Server | null => io;
