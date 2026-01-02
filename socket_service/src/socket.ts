@@ -13,7 +13,7 @@ export const initSocket = (httpServer: HttpServer): void => {
   });
 
   
-  io.use(authenticateSocket);
+  io.use(authenticateSocket);   
   
   io.on("connection", (socket: AuthenticatedSocket) => {
     console.log("✅ Client connected:", socket.id, "User:", socket.user);

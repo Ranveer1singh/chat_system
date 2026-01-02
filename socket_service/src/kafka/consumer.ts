@@ -9,7 +9,7 @@ export const startConsumer = async () => {
     await consumer.connect();
     console.log("✅ Kafka Consumer connected");
 
-    await consumer.subscribe({ topic: "chat-messages", fromBeginning: true });
+    await consumer.subscribe({ topic: "chat-service", fromBeginning: true });
     console.log("📩 Subscribed to topic: chat-messages");
 
     await consumer.run({
