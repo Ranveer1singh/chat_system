@@ -1,13 +1,11 @@
-import Trail from "./component/Trail"
+import SplashContainer from "./component/Splash/SplashContainer"
 
 const App = () => {
   return (
-    <div>
-      <Trail/>
-      <h1 className="!text-red-600 text-sm">
-        Ranveer Singh Tomar
-      </h1>
-    </div>
+    <>
+      <SplashContainer />
+
+    </>
   )
 }
 
