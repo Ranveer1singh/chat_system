@@ -1,11 +1,9 @@
-import { Button, Typography } from "@mui/material";
-import type React from "react";
-export interface splashOneProps {
-    splashScreen: () => void;
-}
-const SplashOne:React.FC<splashOneProps> = ({splashScreen}) => {
+import { Button, Typography } from "@mui/material"
+import type { splashOneProps } from "./SplashOne"
+
+const SplashThree:React.FC<splashOneProps> = ({splashScreen}) => {
   return (
-    <section className="min-h-screen bg-[#E7E8E3] flex flex-col">
+     <section className="min-h-screen bg-[#E7E8E3] flex flex-col">
       {/* Content */}
       <div className="flex-1 flex flex-col justify-between px-6 sm:px-10 lg:px-20 py-12 max-w-7xl mx-auto w-full">
         
@@ -15,7 +13,7 @@ const SplashOne:React.FC<splashOneProps> = ({splashScreen}) => {
             variant="h3"
             className="!font-bold !text-[#2D6936]"
           >
-            Welcome
+            Welcome 3
           </Typography>
 
           <Typography
@@ -46,7 +44,7 @@ const SplashOne:React.FC<splashOneProps> = ({splashScreen}) => {
         <DotsMobileStepper />
       </div> */}
     </section>
-  );
-};
+  )
+}
 
-export default SplashOne;
+export default SplashThree
