@@ -7,18 +7,24 @@ import Steepper from "../custome/Steepper"
 
 const SplashContainer = () => {
     const [activeStep, setActiveStep] = useState(0);
+    const TOTAL_STEPS = 3;
     console.log("activeStep", activeStep);
-    const handleNextScreen =()=>{
-        setActiveStep((prev)=> prev +1)
+    const handleNext  =()=>{
+         setActiveStep((prev) => Math.min(prev + 1, TOTAL_STEPS - 1));
     }
+      const handleFinish = () => {
+    // example: navigate("/login")
+    console.log("Onboarding completed");
+  };
+
     const renderSplashScreen = (index: number): JSX.Element | null => {
         switch (index) {
             case 0:
-                return <SplashOne splashScreen={handleNextScreen} />;
+                return <SplashOne onNext={handleNext} />;
             case 1:
-                return <SplashTwo splashScreen={handleNextScreen}/>;
+                return <SplashTwo onNext={handleNext}/>;
             case 2:
-                return <SplashThree splashScreen={handleNextScreen}/>;
+                return <SplashThree onFinish={handleFinish}/>;
             default:
                 return null;
         }
@@ -28,12 +34,8 @@ const SplashContainer = () => {
     <section className="splash-container min-h-screen bg-[#E7E8E3] ">
         <div className="">
             {renderSplashScreen(activeStep)}
-    {/* <SplashOne splashScreen={handleNextScreen}/> */}
         </div>
-        {/* <DotsMobileStepper /> */}
         <Steepper totalSteps={3} activeStep={activeStep} />
-    {/* <SplashTwo/>
-    <SplashThree/> */}
     </section>
     </>
   )

@@ -1,9 +1,9 @@
 import { Button, Typography } from "@mui/material";
 import type React from "react";
 export interface splashOneProps {
-    splashScreen: () => void;
+    onNext: () => void;
 }
-const SplashOne:React.FC<splashOneProps> = ({splashScreen}) => {
+const SplashOne:React.FC<splashOneProps> = ({onNext}) => {
   return (
     <section className="min-h-screen bg-[#E7E8E3] flex flex-col">
       {/* Content */}
@@ -30,7 +30,7 @@ const SplashOne:React.FC<splashOneProps> = ({splashScreen}) => {
         {/* Button Section */}
         <div className="flex justify-end">
           <Button
-          onClick={splashScreen}
+          onClick={onNext}
             variant="contained"
             color="success"
             size="large"

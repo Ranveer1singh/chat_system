@@ -1,25 +1,23 @@
-import type React from "react";
-
-
-interface SteepperProps {
-    totalSteps: number;
-    activeStep: number;
-    // handleNext: () => void;
-    // handleBack: () => void;
+interface StepperProps {
+  totalSteps: number;
+  activeStep: number;
 }
-const Steepper:React.FC<SteepperProps>  = ({totalSteps, activeStep}) => {
+
+const Stepper = ({ totalSteps, activeStep }: StepperProps) => {
   return (
-    <div className="stepper-container p-1">
-        <div className="steps flex justify-center gap-4 my-4">
-            {Array.from({length : totalSteps}).map((_, index)=>(
-                <div className="">
-                    <div className={`w-10 h-3  rounded-xl ${index === activeStep ? 'bg-green-600' : 'bg-gray-300'}`}></div>
-                </div>
-            ))}
-
-        </div>
+    <div className="pb-6">
+      <div className="flex justify-center gap-3">
+        {Array.from({ length: totalSteps }).map((_, index) => (
+          <div
+            key={index}
+            className={`h-2 w-8 rounded-full transition-all ${
+              index === activeStep ? "bg-green-600" : "bg-gray-300"
+            }`}
+          />
+        ))}
+      </div>
     </div>
-  )
-}
+  );
+};
 
-export default Steepper
+export default Stepper;
