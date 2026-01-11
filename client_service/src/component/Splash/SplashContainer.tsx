@@ -14,6 +14,7 @@ const SplashContainer = () => {
     }
       const handleFinish = () => {
     // example: navigate("/login")
+    setActiveStep(0);
     console.log("Onboarding completed");
   };
 
@@ -31,7 +32,7 @@ const SplashContainer = () => {
     }
   return (
     <>
-    <section className="splash-container min-h-screen bg-[#E7E8E3] ">
+    <section className="splash-container min-h-screen bg-[#E7E8E3] flex flex-col justify-between">
         <div className="">
             {renderSplashScreen(activeStep)}
         </div>

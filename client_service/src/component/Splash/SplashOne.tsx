@@ -1,11 +1,12 @@
 import { Button, Typography } from "@mui/material";
 import type React from "react";
+import WellComeImg from "../../assets/img/Gemini_Generated_Image_xy1i9axy1i9axy1i.png"
 export interface splashOneProps {
     onNext: () => void;
 }
 const SplashOne:React.FC<splashOneProps> = ({onNext}) => {
   return (
-    <section className="min-h-screen bg-[#E7E8E3] flex flex-col">
+    <section className="!min-h-[90vh] bg-[#E7E8E3] flex flex-col">
       {/* Content */}
       <div className="flex-1 flex flex-col justify-between px-6 sm:px-10 lg:px-20 py-12 max-w-7xl mx-auto w-full">
         
@@ -25,6 +26,9 @@ const SplashOne:React.FC<splashOneProps> = ({onNext}) => {
             We’re glad that you’re here. Let’s help you get started with a
             smarter and smoother chat experience.
           </Typography>
+        </div>
+        <div className="img-container">
+          <img src={WellComeImg} alt="" />
         </div>
 
         {/* Button Section */}
