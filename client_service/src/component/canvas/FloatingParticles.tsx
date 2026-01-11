@@ -11,9 +11,9 @@ const FloatingParticles: React.FC = () => {
 
     let animationFrameId: number;
     const particles: Particle[] = [];
-    const particleCount = 15; // Subtle, not crowded
+    const particleCount = 15; 
 
-    // Matches your brand colors
+    
     const colors = ['#2D6936', '#A5D6A7', '#E8F0E8'];
 
     class Particle {
@@ -22,7 +22,7 @@ const FloatingParticles: React.FC = () => {
         this.x = Math.random() * canvas!.width;
         this.y = Math.random() * canvas!.height;
         this.size = Math.random() * 5 + 2;
-        this.speedX = Math.random() * 0.5 - 0.25; // Slow drift
+        this.speedX = Math.random() * 0.5 - 0.25; 
         this.speedY = Math.random() * 0.5 - 0.25;
         this.color = colors[Math.floor(Math.random() * colors.length)];
       }
@@ -44,7 +44,7 @@ const FloatingParticles: React.FC = () => {
     }
 
     const init = () => {
-      canvas.width = 300; // Match your SVG container size
+      canvas.width = 300; 
       canvas.height = 300;
       for (let i = 0; i < particleCount; i++) {
         particles.push(new Particle());

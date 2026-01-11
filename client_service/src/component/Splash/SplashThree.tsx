@@ -1,6 +1,6 @@
 import { Button } from "@mui/material";
 import FloatingParticles from "../../component/canvas/FloatingParticles";
-import AnimatedChatIcon from "../lord-icon/AnimatedChatIcon";
+import LordIcon from "../lord-icon/LordIcon";
 
 interface SplashThreeProps {
   onFinish: () => void;
@@ -24,7 +24,11 @@ const SplashThree: React.FC<SplashThreeProps> = ({ onFinish }) => {
              <FloatingParticles />
             
              <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-            <AnimatedChatIcon/>
+           <LordIcon
+  src="https://cdn.lordicon.com/jdgfsfzr.json"
+  trigger="loop"
+  size={120}
+/>
              </div>
         </div>
       </div>
