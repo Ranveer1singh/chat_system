@@ -18,18 +18,18 @@ const SplashThree: React.FC<SplashThreeProps> = ({ onFinish }) => {
         </p>
       </div>
 
-    
+
       <div className="img-container flex justify-center items-center">
         <div className="relative">
-             <FloatingParticles />
-            
-             <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-           <LordIcon
-  src="https://cdn.lordicon.com/jdgfsfzr.json"
-  trigger="loop"
-  size={120}
-/>
-             </div>
+          <FloatingParticles />
+
+          <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+            <LordIcon
+              src="https://cdn.lordicon.com/jdgfsfzr.json"
+              trigger="loop"
+              size={120}
+            />
+          </div>
         </div>
       </div>
 

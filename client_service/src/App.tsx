@@ -1,9 +1,11 @@
-import SplashContainer from "./component/Splash/SplashContainer"
+// import SplashContainer from "./component/Splash/SplashContainer"
+import SignUp from "./pages/SignUp"
 
 const App = () => {
   return (
     <>
-      <SplashContainer />
+    <SignUp />
+      {/* <SplashContainer /> */}
 
     </>
   )
