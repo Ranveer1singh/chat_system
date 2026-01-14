@@ -1,13 +1,13 @@
 import { useState } from 'react';
 import { TextField, Button, IconButton, InputAdornment } from '@mui/material';
-import { Visibility, VisibilityOff, Email, Person, Lock, ArrowBack } from '@mui/icons-material';
+import { Visibility, VisibilityOff, Email, Person, Lock, ArrowBack, Phone } from '@mui/icons-material';
 import AnimatedChatIcon from '../component/lord-icon/AnimatedChatIcon';
 
 const SignUp = () => {
     const [showPassword, setShowPassword] = useState(false);
 
     return (
-        
+
         <div className="flex min-h-screen bg-[#F8F9F8] overflow-x-hidden">
             <div className="hidden md:flex md:w-1/2 bg-[#E8F0E8] flex-col items-center justify-center p-12">
                 <div className="max-w-md text-center">
@@ -22,7 +22,7 @@ const SignUp = () => {
                 </div>
             </div>
             <div className="w-full md:w-1/2 flex flex-col justify-center items-center px-6 py-12 md:px-16 relative">
-                
+
                 {/* <div className="absolute top-6 left-6">
                     <IconButton className="!text-[#2D6936]">
                         <ArrowBack />
@@ -47,10 +47,18 @@ const SignUp = () => {
 
                         <TextField
                             fullWidth
-                            label="Email Address"
+                            label="Phone Number"
                             variant="outlined"
+                            type="tel"
                             InputProps={{
-                                startAdornment: <InputAdornment position="start"><Email className="text-[#2D6936]" /></InputAdornment>,
+                                startAdornment: (
+                                    <InputAdornment position="start">
+                                        <div className="flex items-center gap-1 border-r pr-2 mr-2 border-gray-300">
+                                            <Phone className="text-[#2D6936] text-sm" />
+                                            <span className="text-sm font-semibold text-gray-600">+91</span>
+                                        </div>
+                                    </InputAdornment>
+                                ),
                             }}
                         />
 
