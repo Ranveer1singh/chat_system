@@ -1,5 +1,4 @@
 import { useState, type JSX } from "react"
-import DotsMobileStepper from "../Footer/DotsMobileStepper"
 import SplashOne from "./SplashOne"
 import SplashThree from "./SplashThree"
 import SplashTwo from "./SplashTwo"
