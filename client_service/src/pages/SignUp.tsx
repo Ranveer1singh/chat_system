@@ -2,10 +2,10 @@ import { useState } from 'react';
 import { TextField, Button, IconButton, InputAdornment } from '@mui/material';
 import { Visibility, VisibilityOff, Email, Person, Lock, ArrowBack, Phone } from '@mui/icons-material';
 import AnimatedChatIcon from '../component/lord-icon/AnimatedChatIcon';
-
+import { useNavigate } from '@tanstack/react-router';
 const SignUp = () => {
     const [showPassword, setShowPassword] = useState(false);
-
+    const navigate = useNavigate()
     return (
 
         <div className="flex min-h-screen bg-[#F8F9F8] overflow-x-hidden">
@@ -91,7 +91,7 @@ const SignUp = () => {
 
                         <p className="text-center mt-6 text-gray-600">
                             Already have an account?
-                            <span className="text-[#2D6936] font-bold ml-1 cursor-pointer hover:underline">
+                            <span onClick={()=> navigate({to :"/login"})} className="text-[#2D6936] font-bold ml-1 cursor-pointer hover:underline">
                                 Log In
                             </span>
                         </p>

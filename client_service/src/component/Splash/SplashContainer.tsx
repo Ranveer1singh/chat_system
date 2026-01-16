@@ -3,18 +3,18 @@ import SplashOne from "./SplashOne"
 import SplashThree from "./SplashThree"
 import SplashTwo from "./SplashTwo"
 import Steepper from "../custome/Steepper"
+import { useNavigate } from "@tanstack/react-router"
 
 const SplashContainer = () => {
     const [activeStep, setActiveStep] = useState(0);
+    const navigate = useNavigate();
     const TOTAL_STEPS = 3;
     console.log("activeStep", activeStep);
     const handleNext  =()=>{
          setActiveStep((prev) => Math.min(prev + 1, TOTAL_STEPS - 1));
     }
       const handleFinish = () => {
-    // example: navigate("/login")
-    setActiveStep(0);
-    console.log("Onboarding completed");
+        navigate({ to: "/register" });
   };
 
     const renderSplashScreen = (index: number): JSX.Element | null => {

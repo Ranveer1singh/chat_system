@@ -1,9 +1,10 @@
 import { useState } from 'react';
 import { TextField, Button, IconButton, InputAdornment, Checkbox, FormControlLabel } from '@mui/material';
 import { Visibility, VisibilityOff, Lock, Phone } from '@mui/icons-material';
-
+import { useNavigate } from '@tanstack/react-router';
 
 const SignIn = () => {
+    const navigate = useNavigate()
     const [showPassword, setShowPassword] = useState(false);
 
     return (
@@ -112,7 +113,7 @@ const SignIn = () => {
 
                         <p className="text-center text-gray-600">
                             Don't have an account?
-                            <span className="text-[#2D6936] font-bold ml-1 cursor-pointer hover:underline">
+                            <span onClick={()=> navigate({to :"/register"})} className="text-[#2D6936] font-bold ml-1 cursor-pointer hover:underline">
                                 Sign Up
                             </span>
                         </p>
