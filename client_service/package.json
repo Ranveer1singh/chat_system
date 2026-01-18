@@ -23,6 +23,7 @@
     "lottie-web": "^5.13.0",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
+    "react-hook-form": "^7.71.1",
     "react-redux": "^9.2.0"
   },
   "devDependencies": {

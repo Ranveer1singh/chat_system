@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { loginUser } from './thunk';
+import { createUser, loginUser } from './thunk';
 interface AuthState {
     user: any | null;
     token: string | null;
@@ -36,6 +36,20 @@ const authSlice = createSlice({
                 state.token = action.payload.token;
             })
             .addCase(loginUser.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.payload as string;
+            });
+        builder
+            .addCase(createUser.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+            })
+            .addCase(createUser.fulfilled, (state, action) => {
+                state.loading = false;
+                // state.user = action.payload.user;
+                state.token = action.payload.token;
+            })
+            .addCase(createUser.rejected, (state, action) => {
                 state.loading = false;
                 state.error = action.payload as string;
             });

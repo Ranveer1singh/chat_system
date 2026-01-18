@@ -13,13 +13,14 @@ export const UserSchema = z.object({
   userName: z.string(),
   password: z.string(),
   isActive: z.boolean(),
-  role: z.nativeEnum(Role), 
+  phone: z.string(),
+  role: z.nativeEnum(Role),
 });
 export const AuthUser = z.object({
   // _id : z.string() ,
   fullName: z.string(),
   userName: z.string(),
-  role: z.nativeEnum(Role), 
+  role: z.nativeEnum(Role),
 });
 
 

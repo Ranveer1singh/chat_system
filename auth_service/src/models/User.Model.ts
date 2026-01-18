@@ -7,6 +7,7 @@ export interface IUser extends Document {
   userName: string;
   password: string;
   isActive: boolean;
+  phone: string;
   role: Role;   // use lowercase for consistency
 }
 
@@ -24,6 +25,12 @@ const userSchema: Schema<IUser> = new mongoose.Schema(
       unique: true,
       trim: true,
     },
+    phone: {
+      type: String,
+      required: true,
+      // unique: true,
+      trim: true,
+    },
     password: {
       type: String,
       required: true,
@@ -33,9 +40,9 @@ const userSchema: Schema<IUser> = new mongoose.Schema(
       default: true,
     },
     role: {
-       type: String,
-    enum: Object.values(Role),
-    default: Role.USER,
+      type: String,
+      enum: Object.values(Role),
+      default: Role.USER,
     },
   },
   { timestamps: true } // adds createdAt & updatedAt
