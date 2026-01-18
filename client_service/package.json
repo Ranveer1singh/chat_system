@@ -18,6 +18,7 @@
     "@mui/material": "^7.3.6",
     "@tanstack/react-router": "^1.150.0",
     "@tanstack/react-router-devtools": "^1.150.0",
+    "axios": "^1.13.2",
     "lottie-web": "^5.13.0",
     "react": "^19.2.0",
     "react-dom": "^19.2.0"
