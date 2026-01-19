@@ -7,17 +7,18 @@ import { exit } from "process";
 class UserService {
   async createUser(data: ICreateUser) {
     const hashedPassword = await bcrypt.hash(data.password, 10);
-    const user = new UserModel({...data, password : hashedPassword});
+    const user = new UserModel({ ...data, password: hashedPassword });
     await user.save()
-    const token =  accessToken(
+    const token = accessToken(
       {
-        fullName : user.fullName,
-        userName : user.userName,
-        role : user.role
+        fullName: user.fullName,
+        // userName: user.userName,
+        phone: user.phone,
+        role: user.role
       }
 
     )
-    return  token;
+    return token;
   }
 
   async updateUser(id: string, data: any) {
@@ -35,23 +36,23 @@ class UserService {
     return await UserModel.findById(id);
   }
 
-  async login(body : any){
-try {
-  const {userName , password} = body;
-  const exitsUser = await UserModel.findOne({userName})
-if(!exitsUser) throw new Error("User name is not valid")
+  async login(body: any) {
+    try {
+      const { phone, password } = body;
+      const exitsUser = await UserModel.findOne({ phone })
+      if (!exitsUser) throw new Error("User name is not valid")
 
-  const isMatch = bcrypt.compare(password, exitsUser.password)
-  if(!isMatch) throw new Error("Invaild credentials")
-    const token = accessToken({
-  fullName : exitsUser.fullName,
-  userName : exitsUser.userName,
-  role : exitsUser.role
-    })
-    return token;
-} catch (error) {
-  
-}
+      const isMatch = bcrypt.compare(password, exitsUser.password)
+      if (!isMatch) throw new Error("Invaild credentials")
+      const token = accessToken({
+        fullName: exitsUser.fullName,
+        phone: exitsUser.phone,
+        role: exitsUser.role
+      })
+      return token;
+    } catch (error) {
+
+    }
   }
 }
 

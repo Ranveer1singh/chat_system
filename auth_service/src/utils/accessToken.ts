@@ -2,16 +2,16 @@ import jwt from "jsonwebtoken";
 import { Request } from "express"
 
 import { IAuthUser } from "../schemas/userSchemas.dto";
-const JWT_SECRET = process.env.JWT_SECRET || "supersecret"; 
+const JWT_SECRET = process.env.JWT_SECRET || "supersecret";
 const EXPIRES_IN = "1h"; // configurable
 
 export const accessToken = (payload: IAuthUser): string => {
-  const token=  jwt.sign({
-    fullName : payload.fullName,
-    userName : payload.userName,
-    role : payload.role
-  }, JWT_SECRET, { expiresIn: EXPIRES_IN })
-  return token;
+    const token = jwt.sign({
+        fullName: payload.fullName,
+        userName: payload.phone,
+        role: payload.role
+    }, JWT_SECRET, { expiresIn: EXPIRES_IN })
+    return token;
 };
 
 export const ValidateSignature = async (req: Request): Promise<boolean> => {
@@ -31,8 +31,8 @@ export const ValidateSignature = async (req: Request): Promise<boolean> => {
         }
 
         const payload = await jwt.verify(token, JWT_SECRET) as IAuthUser; // Verify the token
-    //    req.user = payload
-        (req as any).user = payload; 
+        //    req.user = payload
+        (req as any).user = payload;
 
         return true;
     } catch (error) {

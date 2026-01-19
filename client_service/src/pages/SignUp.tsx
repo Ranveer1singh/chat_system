@@ -22,7 +22,6 @@ const SignUp = () => {
     });
 
     const onSubmit = async (data: any) => {
-        // We dispatch the thunk with the form data
         const resultAction = await dispatch(createUser({
             userName: data.userName,
             fullName: data.fullName,

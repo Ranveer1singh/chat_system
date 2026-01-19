@@ -18,8 +18,9 @@ export const UserSchema = z.object({
 });
 export const AuthUser = z.object({
   // _id : z.string() ,
+  // userName: z.string(),
+  phone: z.string(),
   fullName: z.string(),
-  userName: z.string(),
   role: z.nativeEnum(Role),
 });
 

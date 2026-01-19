@@ -13,7 +13,7 @@ export const loginUser = createAsyncThunk<
     async (credentials, { rejectWithValue }) => {
         try {
             const response = await apiWrapper.post<LoginResponse>(
-                '/auth/login',
+                'user/signIn',
                 credentials
             );
             localStorage.setItem('token', response.data.token);
