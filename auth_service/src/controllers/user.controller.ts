@@ -1,16 +1,17 @@
 import { Request, Response } from "express";
 import { userService } from "../services/user.service";
 import { CreateUserSchema } from "../schemas/userSchemas.dto";
+import { Console } from "console";
 
 class UserController {
   // Create
   async create(req: Request, res: Response) {
     try {
-        const data = CreateUserSchema.parse(req.body)
+      const data = CreateUserSchema.parse(req.body)
       const user = await userService.createUser(data);
-      res.status(201).json({ success: true, data: user });
+      res.status(201).json({ success: true, token: user });
     } catch (error: any) {
-        console.log(error)
+      console.log(error)
       res.status(400).json({ success: false, message: error.message });
     }
   }
@@ -54,10 +55,9 @@ class UserController {
   }
   async login(req: Request, res: Response) {
     try {
-      const { id } = req.params;
       const token = await userService.login(req.body);
-      
-      res.status(200).json({ success: true , token });
+
+      res.status(200).json({ success: true, token });
     } catch (error: any) {
       res.status(400).json({ success: false, message: error.message });
     }
@@ -65,9 +65,9 @@ class UserController {
   async loginUser(req: Request, res: Response) {
     try {
       const { user } = req as any;
-     
-        console.log(user)
-      res.status(200).json({ success: true , user });
+
+      console.log(user)
+      res.status(200).json({ success: true, user });
     } catch (error: any) {
       res.status(400).json({ success: false, message: error.message });
     }

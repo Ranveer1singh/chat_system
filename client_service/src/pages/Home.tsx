@@ -1,17 +1,24 @@
-import React, { useState } from 'react';
-import { 
-  List, ListItem, ListItemAvatar, Avatar, ListItemText, 
-  IconButton, TextField, InputAdornment, Badge 
+import { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import type { AppDispatch, RootState } from '../store';
+import {
+  List, ListItem, ListItemAvatar, Avatar, ListItemText,
+  IconButton, TextField, InputAdornment, Badge
 } from '@mui/material';
 import { Search, MoreVert, EditNote, Send, ArrowBack, AttachFile, TagFaces, DoneAll } from '@mui/icons-material';
+import { allUser } from '../service/auth/thunk';
 
 const Home = () => {
   const [selectedChat, setSelectedChat] = useState<any>(null);
   const [message, setMessage] = useState('');
-
+  const dispatch = useDispatch<AppDispatch>();
+  const { loading, error, users } = useSelector((state: RootState) => state.auth);
+  useEffect(() => {
+    dispatch(allUser());
+  }, [dispatch]);
   const CHAT_USERS = [
     { id: 1, name: 'Arjun Sharma', lastMsg: 'See you at the forest trail!', time: '10:20 AM', online: true, unread: 0 },
-    { id: 2, name: 'Priya Patel', lastMsg: 'Sent a photo', time: 'Yesterday', online: false, unread: 2 },
+    { id: 2, name: 'Priya Patela', lastMsg: 'Sent a photo', time: 'Yesterday', online: false, unread: 2 },
     { id: 3, name: 'Eco Group', lastMsg: 'John: We should plant more trees.', time: 'Monday', online: true, unread: 0 },
     { id: 4, name: 'Suresh Raina', lastMsg: 'The project is ready.', time: 'Jan 12', online: false, unread: 0 },
   ];
@@ -22,9 +29,10 @@ const Home = () => {
     { id: 3, text: "I agree, it feels very calm. 🌿", sender: 'them', time: '10:05 AM' },
   ];
 
+  console.log(users);
   return (
     <div className="flex h-screen bg-white overflow-hidden">
-      
+
       <div className={`${selectedChat ? 'hidden md:flex' : 'flex'} w-full md:w-[400px] border-r border-gray-100 flex-col h-full bg-white`}>
         <div className="p-6 pb-2">
           <div className="flex justify-between items-center mb-6">
@@ -49,12 +57,11 @@ const Home = () => {
 
         <List className="flex-grow overflow-y-auto mt-2 px-2">
           {CHAT_USERS.map((user) => (
-            <ListItem 
-              key={user.id} 
+            <ListItem
+              key={user.id}
               onClick={() => setSelectedChat(user)}
-              className={`rounded-2xl mb-1 cursor-pointer transition-all ${
-                selectedChat?.id === user.id ? 'bg-[#E8F0E8]' : 'hover:bg-gray-50'
-              }`}
+              className={`rounded-2xl mb-1 cursor-pointer transition-all ${selectedChat?.id === user.id ? 'bg-[#E8F0E8]' : 'hover:bg-gray-50'
+                }`}
               secondaryAction={
                 <div className="flex flex-col items-end gap-1">
                   <span className={`text-[11px] ${user.unread > 0 ? 'text-[#2D6936] font-bold' : 'text-gray-400'}`}>
@@ -122,17 +129,16 @@ const Home = () => {
 
             {/* Messages Area */}
             <div className="flex-1 overflow-y-auto p-4 space-y-4 flex flex-col custom-scrollbar">
-               {/* Center Date Badge */}
-               <div className="self-center bg-gray-200/50 px-3 py-1 rounded-full">
-                  <span className="text-[10px] text-gray-500 font-bold uppercase tracking-wider">Today</span>
-               </div>
+              {/* Center Date Badge */}
+              <div className="self-center bg-gray-200/50 px-3 py-1 rounded-full">
+                <span className="text-[10px] text-gray-500 font-bold uppercase tracking-wider">Today</span>
+              </div>
 
               {MOCK_MESSAGES.map((msg) => (
-                <div key={msg.id} className={`max-w-[75%] p-3 rounded-2xl shadow-sm ${
-                  msg.sender === 'me' 
-                  ? 'bg-[#2D6936] text-white self-end rounded-tr-none' 
-                  : 'bg-white text-gray-800 self-start rounded-tl-none'
-                }`}>
+                <div key={msg.id} className={`max-w-[75%] p-3 rounded-2xl shadow-sm ${msg.sender === 'me'
+                    ? 'bg-[#2D6936] text-white self-end rounded-tr-none'
+                    : 'bg-white text-gray-800 self-start rounded-tl-none'
+                  }`}>
                   <p className="text-[14px] leading-relaxed">{msg.text}</p>
                   <div className={`flex items-center justify-end gap-1 mt-1 ${msg.sender === 'me' ? 'text-white/60' : 'text-gray-400'}`}>
                     <span className="text-[9px] font-medium">{msg.time}</span>
@@ -145,7 +151,7 @@ const Home = () => {
             {/* Input Area */}
             <div className="p-4 bg-white border-t border-gray-100 flex items-center gap-2">
               <div className="flex bg-gray-50 rounded-full flex-1 items-center px-2">
-                <IconButton size="small"><TagFaces className="text-gray-400"/></IconButton>
+                <IconButton size="small"><TagFaces className="text-gray-400" /></IconButton>
                 <TextField
                   fullWidth
                   placeholder="Type a message..."
@@ -157,7 +163,7 @@ const Home = () => {
                 />
                 <IconButton size="small"><AttachFile className="text-gray-400 rotate-45" /></IconButton>
               </div>
-              <IconButton 
+              <IconButton
                 disabled={!message.trim()}
                 className={`${message.trim() ? '!bg-[#2D6936] !text-white' : '!bg-gray-100 !text-gray-300'} !transition-all shadow-md`}
               >
@@ -168,11 +174,11 @@ const Home = () => {
         ) : (
           /* Empty State */
           <div className="flex-1 flex flex-col items-center justify-center text-center p-10">
-             <div className="w-24 h-24 bg-[#E8F0E8] rounded-full flex items-center justify-center mb-6 animate-bounce duration-1000">
-               <span className="text-4xl">🌿</span>
-             </div>
-             <h2 className="text-2xl font-bold text-[#2D6936]">Stay Rooted</h2>
-             <p className="text-gray-500 max-w-[250px] mt-2">Choose a conversation to start a calm and secure chat.</p>
+            <div className="w-24 h-24 bg-[#E8F0E8] rounded-full flex items-center justify-center mb-6 animate-bounce duration-1000">
+              <span className="text-4xl">🌿</span>
+            </div>
+            <h2 className="text-2xl font-bold text-[#2D6936]">Stay Rooted</h2>
+            <p className="text-gray-500 max-w-[250px] mt-2">Choose a conversation to start a calm and secure chat.</p>
           </div>
         )}
       </div>

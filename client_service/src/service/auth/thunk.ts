@@ -3,6 +3,14 @@ import apiWrapper from '../../apiHandler/api';
 interface LoginResponse {
     token: string;
 }
+interface User {
+    _id: string;
+    userName: string;
+    fullName: string;
+    phone: string;
+    // add other fields your backend returns
+}
+type AllUsersResponse = User[];
 // Async Thunk for Login
 export const loginUser = createAsyncThunk<
     LoginResponse,
@@ -42,6 +50,23 @@ export const createUser = createAsyncThunk<
         } catch (err: any) {
             return rejectWithValue(
                 err?.response?.data?.message ?? 'Login Failed'
+            );
+        }
+    }
+);
+export const allUser = createAsyncThunk<
+    AllUsersResponse,
+    void,
+    { rejectValue: string }
+>(
+    'auth/allUser',
+    async (_: void, { rejectWithValue }) => {
+        try {
+            const response = await apiWrapper.get<{ sucusse: boolean, data: AllUsersResponse }>('/user/allUser');
+            return response.data.data
+        } catch (err: any) {
+            return rejectWithValue(
+                err?.response?.data?.message ?? 'Failed to fetch users'
             );
         }
     }

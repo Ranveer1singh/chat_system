@@ -1,8 +1,7 @@
 import UserModel from "../models/User.Model";
 import bcrypt from "bcrypt";
-import { ICreateUser, Role } from "../schemas/userSchemas.dto";
+import { ICreateUser } from "../schemas/userSchemas.dto";
 import { accessToken } from "../utils/accessToken";
-import { exit } from "process";
 
 class UserService {
   async createUser(data: ICreateUser) {
@@ -11,6 +10,7 @@ class UserService {
     await user.save()
     const token = accessToken(
       {
+        id: user.id.toString(),
         fullName: user.fullName,
         // userName: user.userName,
         phone: user.phone,
@@ -29,7 +29,7 @@ class UserService {
   }
 
   async listUsers() {
-    return await UserModel.find();
+    return await UserModel.find().select('-password');
   }
 
   async getUserById(id: string) {
@@ -45,6 +45,7 @@ class UserService {
       const isMatch = bcrypt.compare(password, exitsUser.password)
       if (!isMatch) throw new Error("Invaild credentials")
       const token = accessToken({
+        id: exitsUser.id.toString(),
         fullName: exitsUser.fullName,
         phone: exitsUser.phone,
         role: exitsUser.role

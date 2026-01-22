@@ -1,7 +1,8 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { createUser, loginUser } from './thunk';
+import { allUser, createUser, loginUser } from './thunk';
 interface AuthState {
     user: any | null;
+    users: any[];
     token: string | null;
     loading: boolean;
     error: string | null;
@@ -9,6 +10,7 @@ interface AuthState {
 
 const initialState: AuthState = {
     user: null,
+    users: [],
     token: localStorage.getItem('token'),
     loading: false,
     error: null,
@@ -50,6 +52,19 @@ const authSlice = createSlice({
                 state.token = action.payload.token;
             })
             .addCase(createUser.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.payload as string;
+            });
+        builder
+            .addCase(allUser.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+            })
+            .addCase(allUser.fulfilled, (state, action) => {
+                state.loading = false;
+                state.users = action.payload;
+            })
+            .addCase(allUser.rejected, (state, action) => {
                 state.loading = false;
                 state.error = action.payload as string;
             });

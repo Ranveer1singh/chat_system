@@ -7,8 +7,9 @@ const EXPIRES_IN = "1h"; // configurable
 
 export const accessToken = (payload: IAuthUser): string => {
     const token = jwt.sign({
+        id: payload.id,
         fullName: payload.fullName,
-        userName: payload.phone,
+        phone: payload.phone,
         role: payload.role
     }, JWT_SECRET, { expiresIn: EXPIRES_IN })
     return token;
