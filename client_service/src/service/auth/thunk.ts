@@ -8,9 +8,10 @@ interface User {
     userName: string;
     fullName: string;
     phone: string;
+    active: boolean;
     // add other fields your backend returns
 }
-type AllUsersResponse = User[];
+export type AllUsersResponse = User[];
 // Async Thunk for Login
 export const loginUser = createAsyncThunk<
     LoginResponse,

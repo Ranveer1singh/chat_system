@@ -29,7 +29,11 @@ class UserService {
   }
 
   async listUsers() {
-    return await UserModel.find().select('-password');
+    try {
+      return await UserModel.find().select("-password");
+    } catch (error) {
+      throw new Error("Error fetching users");
+    }
   }
 
   async getUserById(id: string) {
@@ -52,7 +56,7 @@ class UserService {
       })
       return token;
     } catch (error) {
-
+      console.log("error-->> ", error);
     }
   }
 }

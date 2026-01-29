@@ -1,8 +1,8 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { allUser, createUser, loginUser } from './thunk';
+import { allUser, createUser, loginUser, type AllUsersResponse } from './thunk';
 interface AuthState {
     user: any | null;
-    users: any[];
+    users: AllUsersResponse
     token: string | null;
     loading: boolean;
     error: string | null;
