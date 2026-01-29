@@ -1,5 +1,6 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import apiWrapper from '../../apiHandler/api';
+import { login } from '../../backendHelper/auth/backend_helper';
 interface LoginResponse {
     token: string;
 }
@@ -21,10 +22,7 @@ export const loginUser = createAsyncThunk<
     'auth/loginUser',
     async (credentials, { rejectWithValue }) => {
         try {
-            const response = await apiWrapper.post<LoginResponse>(
-                'user/signIn',
-                credentials
-            );
+            const response = await login(credentials);
             localStorage.setItem('token', response.data.token);
             return response.data;
         } catch (err: any) {
