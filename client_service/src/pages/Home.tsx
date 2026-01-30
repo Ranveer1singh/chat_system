@@ -18,20 +18,7 @@ const Home = () => {
   useEffect(() => {
     dispatch(allUser());
   }, [dispatch]);
-  // const CHAT_USERS = [
-  //   { id: 1, name: 'Arjun Sharma', lastMsg: 'See you at the forest trail!', time: '10:20 AM', online: true, unread: 0 },
-  //   { id: 2, name: 'Priya Patela', lastMsg: 'Sent a photo', time: 'Yesterday', online: false, unread: 2 },
-  //   { id: 3, name: 'Eco Group', lastMsg: 'John: We should plant more trees.', time: 'Monday', online: true, unread: 0 },
-  //   { id: 4, name: 'Suresh Raina', lastMsg: 'The project is ready.', time: 'Jan 12', online: false, unread: 0 },
-  // ];
-
-  // const MOCK_MESSAGES = [
-  //   { id: 1, text: "Hey! How's the new chat app coming along?", sender: 'them', time: '10:00 AM' },
-  //   { id: 2, text: "It's going great! The forest green theme looks amazing.", sender: 'me', time: '10:02 AM' },
-  //   { id: 3, text: "I agree, it feels very calm. 🌿", sender: 'them', time: '10:05 AM' },
-  // ];
-
-  // console.log(users);
+ 
   return (
     <div className="flex h-screen bg-white overflow-hidden">
 

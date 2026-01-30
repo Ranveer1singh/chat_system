@@ -38,13 +38,11 @@ class ChatService {
   }
   async getById(id: string) {
     const chat = await ChatModel.findById(id)
-      .populate("participants", "name email")
-      .populate("lastMessage");
     if (!chat) throw new Error("Chat not found");
     return chat;
   }
 
-async update(id: string, updates: any) {
+  async update(id: string, updates: any) {
     const chat = await GroupChatModel.findByIdAndUpdate(id, updates, {
       new: true,
       runValidators: true,
