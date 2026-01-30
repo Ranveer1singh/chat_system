@@ -12,17 +12,17 @@ export const initSocket = (httpServer: HttpServer): void => {
     },
   });
 
-  
-  io.use(authenticateSocket);   
-  
+
+  io.use(authenticateSocket);
+
   io.on("connection", (socket: AuthenticatedSocket) => {
-    console.log("✅ Client connected:", socket.id, "User:", socket.user);
-    
+    console.log("Client connected:--->>>", socket.id,);
+
     socket.on("disconnect", () => {
-      console.log("❌ Client disconnected:", socket.id);
+      console.log("Client disconnected:--->>>", socket.id);
     });
   });
- 
+
 };
 
 export const getIO = (): Server | null => io;
