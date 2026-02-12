@@ -8,7 +8,6 @@ class ChatService {
 
     switch (type) {
       case ChatType.DM:
-        // At this stage, Zod already validated participants length = 2
         chat = new DMChatModel({
           type,
           participants,
@@ -16,7 +15,6 @@ class ChatService {
         break;
 
       case ChatType.GROUP:
-        // Zod should validate name & createdBy existence
         chat = new GroupChatModel({
           type,
           participants,
