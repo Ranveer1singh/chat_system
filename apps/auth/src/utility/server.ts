@@ -1,4 +1,5 @@
 import express, { Application, Request, Response } from "express";
+import { apiResponseSchema, type ApiResponse } from "@repo/types";
 // import dbConnnection from "./db"
 // import appRouter from "../routes";
 import "dotenv/config"
@@ -27,7 +28,11 @@ class Server {
     }
     private setupRoute(): void {
         this.app.use('/api', (req: Request, res: Response) => {
-            res.send("Auth server is running")
+            const payload: ApiResponse = {
+                success: true,
+                message: "Auth server is running"
+            };
+            res.json(apiResponseSchema.parse(payload))
         })
     }
     private listenServer() {
