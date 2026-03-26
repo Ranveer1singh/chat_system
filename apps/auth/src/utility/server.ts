@@ -1,12 +1,12 @@
 import express, { Application, Request, Response } from "express";
 import { apiResponseSchema, type ApiResponse } from "@repo/types";
-// import dbConnnection from "./db"
-// import appRouter from "../routes";
+import dbConnnection from "./db"
+import appRouter from "../routes";
 import "dotenv/config"
-// import cors from "cors";
+import cors from "cors";
 
 const app = express();
-// dbConnnection();
+dbConnnection();
 
 class Server {
     private app: Application
@@ -27,13 +27,7 @@ class Server {
         // this.app.use(cookieParser())
     }
     private setupRoute(): void {
-        this.app.use('/api', (req: Request, res: Response) => {
-            const payload: ApiResponse = {
-                success: true,
-                message: "Auth server is running"
-            };
-            res.json(apiResponseSchema.parse(payload))
-        })
+        this.app.use('/api', appRouter)
     }
     private listenServer() {
         const port = process.env.PORT || 5000;
