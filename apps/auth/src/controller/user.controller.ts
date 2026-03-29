@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { userService } from "../service/user";
-import { CreateUserSchema } from "@repo/types"
+import { CreateUserSchema, UpdateUserSchema } from "@repo/types"
 
 class UserController {
     // Create
@@ -18,8 +18,9 @@ class UserController {
     // Update
     async update(req: Request, res: Response) {
         try {
+            const data = UpdateUserSchema.parse(req.body)
             const { id } = req.params as { id: string };
-            const user = await userService.updateUser(id, req.body);
+            const user = await userService.updateUser(id, data);
             if (!user) {
                 return res.status(404).json({ success: false, message: "User not found" });
             }
@@ -74,3 +75,6 @@ class UserController {
 }
 
 export const userController = new UserController();
+
+
+//forgot password api 

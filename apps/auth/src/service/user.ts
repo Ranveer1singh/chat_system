@@ -1,7 +1,8 @@
 import UserModel from "../models/user.model";
 import bcrypt from "bcrypt";
-import { ICreateUser } from '@repo/types';
+import { ICreateUser, IUpdateUser } from '@repo/types';
 import { accessToken } from "../utility/accessToken";
+import { isDataView } from "node:util/types";
 
 class UserService {
     async createUser(data: ICreateUser) {
@@ -21,23 +22,45 @@ class UserService {
         return token;
     }
 
-    async updateUser(id: string, data: any) {
-        return await UserModel.findByIdAndUpdate(id, data, {
-            new: true,
-            runValidators: true,
-        });
+    async updateUser(id: string, data: IUpdateUser) {
+        try {
+            const existingUser = await UserModel.findById(id);
+            if (!existingUser) {
+                throw new Error("User not found");
+            }
+            // const updatedUser = await UserModel.updateOne({ _id: id }, { $set: data });
+            // return updatedUser;
+            Object.assign(existingUser, data);
+            await existingUser.save();
+            return existingUser;
+        } catch (error) {
+            throw new Error("Error updating user");
+        }
     }
 
     async listUsers() {
         try {
-            return await UserModel.find().select("-password");
+            //filter , sort, pagination 
+            const users = await UserModel.find().select("-password");
+            if (users.length === 0) {
+                throw new Error("No users found");
+            }
+            return users;
         } catch (error) {
             throw new Error("Error fetching users");
         }
     }
 
     async getUserById(id: string) {
-        return await UserModel.findById(id);
+        try {
+            const user = await UserModel.findById(id).select("-password");
+            if (!user) {
+                throw new Error("User not found");
+            }
+            return user;
+        } catch (error) {
+            throw new Error("Error fetching user");
+        }
     }
 
     async login(body: any) {
@@ -62,3 +85,5 @@ class UserService {
 }
 
 export const userService = new UserService();
+
+//forgot password service
