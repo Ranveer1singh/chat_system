@@ -1,6 +1,6 @@
 import UserModel from "../models/user.model";
 import bcrypt from "bcrypt";
-import { ICreateUser, IUpdateUser } from '@repo/types';
+import { ICreateUser, IUpdateUser, LoginInput } from '@repo/types';
 import { accessToken } from "../utility/accessToken";
 import { AppError } from "../utility/appError";
 
@@ -47,7 +47,7 @@ class UserService {
         return user;
     }
 
-    async login(body: any) {
+    async login(body: LoginInput) {
         const { phone, password } = body;
 
         if (!phone || !password) {

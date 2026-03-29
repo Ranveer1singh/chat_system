@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { userService } from "../service/user";
-import { CreateUserSchema, UpdateUserSchema } from "@repo/types"
+import { CreateUserSchema, loginSchema, UpdateUserSchema } from "@repo/types"
 import { AppError } from "../utility/appError";
 
 class UserController {
@@ -32,7 +32,8 @@ class UserController {
         res.status(200).json({ success: true, data: user });
     }
     async login(req: Request, res: Response) {
-        const token = await userService.login(req.body);
+        const loginData = loginSchema.parse(req.body);
+        const token = await userService.login(loginData);
         res.status(200).json({ success: true, token });
     }
     async loginUser(req: Request, res: Response) {
