@@ -67,6 +67,12 @@ importers:
         specifier: ^5.9.3
         version: 5.9.3
 
+  apps/chat:
+    dependencies:
+      express:
+        specifier: ^5.2.1
+        version: 5.2.1
+
   apps/docs:
     dependencies:
       '@repo/ui':
