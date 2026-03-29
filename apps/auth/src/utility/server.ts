@@ -1,11 +1,10 @@
-import express, { Application, Request, Response } from "express";
-import { apiResponseSchema, type ApiResponse } from "@repo/types";
+import express, { Application } from "express";
 import dbConnnection from "./db"
 import appRouter from "../routes";
 import "dotenv/config"
 import cors from "cors";
+import { errorHandler, notFoundHandler } from "../middelwares/errorHandler";
 
-const app = express();
 dbConnnection();
 
 class Server {
@@ -28,6 +27,8 @@ class Server {
     }
     private setupRoute(): void {
         this.app.use('/api', appRouter)
+        this.app.use(notFoundHandler);
+        this.app.use(errorHandler);
     }
     private listenServer() {
         const port = process.env.PORT || 5000;

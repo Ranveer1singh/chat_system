@@ -2,7 +2,7 @@ import UserModel from "../models/user.model";
 import bcrypt from "bcrypt";
 import { ICreateUser, IUpdateUser } from '@repo/types';
 import { accessToken } from "../utility/accessToken";
-import { isDataView } from "node:util/types";
+import { AppError } from "../utility/appError";
 
 class UserService {
     async createUser(data: ICreateUser) {
@@ -23,64 +23,54 @@ class UserService {
     }
 
     async updateUser(id: string, data: IUpdateUser) {
-        try {
-            const existingUser = await UserModel.findById(id);
-            if (!existingUser) {
-                throw new Error("User not found");
-            }
-            // const updatedUser = await UserModel.updateOne({ _id: id }, { $set: data });
-            // return updatedUser;
-            Object.assign(existingUser, data);
-            await existingUser.save();
-            return existingUser;
-        } catch (error) {
-            throw new Error("Error updating user");
+        const existingUser = await UserModel.findById(id);
+        if (!existingUser) {
+            throw new AppError("User not found", 404);
         }
+
+        Object.assign(existingUser, data);
+        await existingUser.save();
+        return existingUser;
     }
 
     async listUsers() {
-        try {
-            //filter , sort, pagination 
-            const users = await UserModel.find().select("-password");
-            if (users.length === 0) {
-                throw new Error("No users found");
-            }
-            return users;
-        } catch (error) {
-            throw new Error("Error fetching users");
-        }
+        //filter , sort, pagination 
+        return UserModel.find().select("-password");
     }
 
     async getUserById(id: string) {
-        try {
-            const user = await UserModel.findById(id).select("-password");
-            if (!user) {
-                throw new Error("User not found");
-            }
-            return user;
-        } catch (error) {
-            throw new Error("Error fetching user");
+        const user = await UserModel.findById(id).select("-password");
+        if (!user) {
+            throw new AppError("User not found", 404);
         }
+
+        return user;
     }
 
     async login(body: any) {
-        try {
-            const { phone, password } = body;
-            const exitsUser = await UserModel.findOne({ phone })
-            if (!exitsUser) throw new Error("User name is not valid")
+        const { phone, password } = body;
 
-            const isMatch = bcrypt.compare(password, exitsUser.password)
-            if (!isMatch) throw new Error("Invaild credentials")
-            const token = accessToken({
-                id: exitsUser.id.toString(),
-                fullName: exitsUser.fullName,
-                phone: exitsUser.phone,
-                role: exitsUser.role
-            })
-            return token;
-        } catch (error) {
-            console.log("error-->> ", error);
+        if (!phone || !password) {
+            throw new AppError("Phone and password are required", 400);
         }
+
+        const exitsUser = await UserModel.findOne({ phone });
+        if (!exitsUser) {
+            throw new AppError("User name is not valid", 401);
+        }
+
+        const isMatch = await bcrypt.compare(password, exitsUser.password);
+        if (!isMatch) {
+            throw new AppError("Invalid credentials", 401);
+        }
+
+        const token = accessToken({
+            id: exitsUser.id.toString(),
+            fullName: exitsUser.fullName,
+            phone: exitsUser.phone,
+            role: exitsUser.role
+        })
+        return token;
     }
 }
 

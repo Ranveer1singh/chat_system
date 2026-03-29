@@ -1,6 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 import { ValidateSignature } from "../utility/accessToken";
 import { IAuthUser } from "@repo/types";
+import { AppError } from "../utility/appError";
 
 // declare global {
 //     namespace Express {
@@ -16,8 +17,6 @@ export const Authenticate = async (req: Request, res: Response, next: NextFuncti
     if (isValid) {
         next();
     } else {
-        res.status(401).json({
-            message: "User not authorized. Invalid or missing token.",
-        });
+        next(new AppError("User not authorized. Invalid or missing token.", 401));
     }
 };

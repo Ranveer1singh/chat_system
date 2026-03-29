@@ -14,9 +14,9 @@ userRouter.get("/me", userController.loginUser);
 userRouter.put("/:id", userController.update);
 
 // List all users
-userRouter.get("/allUser", (req, res) => userController.list(req, res));
+userRouter.get("/allUser", userController.list);
 
 // Get user by ID
-userRouter.get("/:id", (req, res) => userController.getById(req, res));
+userRouter.get("/:id", userController.getById);
 
 export default userRouter;
