@@ -69,6 +69,9 @@ importers:
 
   apps/chat:
     dependencies:
+      '@repo/types':
+        specifier: workspace:*
+        version: link:../../packages/types
       dotenv:
         specifier: ^17.3.1
         version: 17.3.1
