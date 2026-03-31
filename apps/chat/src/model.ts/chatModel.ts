@@ -1,10 +1,7 @@
-import mongoose, { Schema, model, Types, HydratedDocument } from "mongoose";
+import { ChatType } from "@repo/types";
+import { Schema, model, Types, HydratedDocument } from "mongoose";
 
-/** ---------- Enums ---------- */
-export enum ChatType {
-  DM = "DM",
-  GROUP = "GROUP",
-}
+
 
 /** ---------- Base Interfaces ---------- */
 export interface IChatBase {

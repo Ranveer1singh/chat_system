@@ -1,7 +1,12 @@
-import { ChatModel, ChatType, DMChatModel, GroupChatModel } from "../model.ts/chatModel";
+import {
+  ChatType,
+  ICreateChat,
+  IUpdateChat,
+} from "@repo/types/dist/chat";
+import { ChatModel, DMChatModel, GroupChatModel } from "../model.ts/chatModel";
 
 class ChatService {
-  async create(body: any) {
+  async create(body: ICreateChat) {
     const { type, participants, name, admins, createdBy } = body;
 
     let chat;
@@ -40,7 +45,11 @@ class ChatService {
     return chat;
   }
 
-  async update(id: string, updates: any) {
+  async getByUserId(userId: string) {
+    return ChatModel.find({ participants: userId }).sort({ updatedAt: -1 });
+  }
+
+  async update(id: string, updates: IUpdateChat) {
     const chat = await GroupChatModel.findByIdAndUpdate(id, updates, {
       new: true,
       runValidators: true,
