@@ -2,10 +2,11 @@ import { Request } from "express";
 import { ChatModel } from "../model.ts/chatModel";
 import { MessageModel } from "../model.ts/messageModel";
 import { produceChatMessage } from "../kafka/producer";
+import { ICreateMessage } from "@repo/types/dist/chat";
 
 class MessageService {
 
-  async send(payload: any) {
+  async send(payload: ICreateMessage) {
     const { chatId, senderId, type, content, attachments } = payload;
     const chat = await ChatModel.findById(chatId).lean();
     if (!chat) throw new Error("Chat not found");
@@ -35,9 +36,19 @@ class MessageService {
     return savedMessage
 
   }
+
+  /**
+   * 
+   * @param messageId 
+   * @param userId 
+   */
+  //when we find message by particular id need to find in DB which takes time for update read by 
+  async readBy(messageId: string, userId: string) {
+    //inprogress
+  }
   /*
   send message --->> done 
-  read message --->> pending 
+  read message --->> In progress
   delete message --->> pending 
   edit message --->> pending 
   
