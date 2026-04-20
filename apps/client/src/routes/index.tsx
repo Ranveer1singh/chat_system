@@ -1,6 +1,6 @@
 import { createFileRoute } from '@tanstack/react-router'
 import Home from '../pages/Home'
-import SplashContainer from '../component/Splash/SplashContainer'
+// import SplashContainer from '../component/Splash/SplashContainer'
 
 export const Route = createFileRoute('/')({
   component: Index,
@@ -9,8 +9,8 @@ export const Route = createFileRoute('/')({
 function Index() {
   return (
     <>
-    <SplashContainer/>
-    {/* <Home /> */}
+    {/* <SplashContainer/> */}
+    <Home />  
     </>
   )
 }
