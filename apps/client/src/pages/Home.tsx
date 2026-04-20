@@ -1,0 +1,46 @@
+import { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import type { AppDispatch, RootState } from '../store';
+// import {
+//   List, ListItem, ListItemAvatar, Avatar, ListItemText,
+//   IconButton, TextField, InputAdornment, Badge
+// } from '@mui/material';
+// import { Search, MoreVert, EditNote, Send, ArrowBack, AttachFile, TagFaces, DoneAll } from '@mui/icons-material';
+import { allUser } from '../service/auth/thunk';
+import Sidebar from '../component/Sidebar';
+import ChatWindow from '../component/ChatWindow';
+
+const Home = () => {
+  const [selectedChat, setSelectedChat] = useState<any>(null);
+  const [message, setMessage] = useState('');
+  const dispatch = useDispatch<AppDispatch>();
+  const { loading, error, users } = useSelector((state: RootState) => state.auth);
+  useEffect(() => {
+    dispatch(allUser());
+  }, [dispatch]);
+ 
+  return (
+    <div className="flex h-screen bg-white overflow-hidden">
+
+     <div className={`${selectedChat ? 'hidden md:flex' : 'flex'} w-full md:w-auto h-full`}>
+        <Sidebar 
+          users={users} 
+          selectedId={selectedChat?._id} 
+          onSelectChat={setSelectedChat}
+          loading={loading}
+        />
+      </div>
+
+      <div className={`${!selectedChat ? 'hidden md:flex' : 'flex'} flex-1 h-full`}>
+        <ChatWindow 
+          chat={selectedChat} 
+          message={message} 
+          setMessage={setMessage}
+          onBack={() => setSelectedChat(null)}
+        />
+      </div>
+    </div>
+  );
+};
+
+export default Home;
