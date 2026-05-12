@@ -9,9 +9,7 @@ export interface AuthenticatedSocket extends Socket {
  * Middleware to authenticate socket connections using JWT
  */
 export const authenticateSocket = (socket: AuthenticatedSocket, next: (err?: Error) => void): void => {
-  console.log("hellop autht")
-    const token = socket.handshake.auth?.token || socket.handshake.query?.token;
-  console.log("token, token", token)
+  const token = socket.handshake.auth?.token || socket.handshake.query?.token;
 
   if (!token) {
     return next(new Error("Authentication error: No token provided"));
@@ -22,6 +20,7 @@ export const authenticateSocket = (socket: AuthenticatedSocket, next: (err?: Err
     socket.user = decoded;
     next();
   } catch (err) {
+    console.log("JWT verification failed:", err);
     next(new Error("Authentication error: Invalid token"));
   }
 };

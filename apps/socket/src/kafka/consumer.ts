@@ -20,12 +20,13 @@ export const startConsumer = async () => {
 
         const parsedMessage = JSON.parse(value);
 
-        console.log(
-          `📥 Received message [${topic} | partition ${partition}] key=${key} value=${value}`
-        );
+        // console.log(
+        //   `📥 Received message [${topic} | partition ${partition}] key=${key} value=${value}`
+        // );
 
         // Example: emit to socket rooms using chatId as room
         const io = getIO();
+        // console.log(io)
         if (!io) throw new Error("socket not initialize")
         io.to(parsedMessage.chatId).emit(topic, parsedMessage);
       },

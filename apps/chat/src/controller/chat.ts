@@ -10,6 +10,7 @@ import {
 class ChatController {
 
   async createChat(req: Request, res: Response) {
+    console.log("Creating chat with data:", req.body);
     const data = CreateChatSchema.parse(req.body);
     const chat = await chatService.create(data);
     res.status(201).json({

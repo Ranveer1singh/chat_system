@@ -53,14 +53,14 @@ const DMChatExtra = new Schema<IDMChat>({
 });
 
 // Hook: enforce 2 participants + create dmKey
-DMChatExtra.pre<HydratedDocument<IDMChat>>("validate", function (next: any) {
+DMChatExtra.pre<HydratedDocument<IDMChat>>("validate", function () {
   const self = this as HydratedDocument<IDMChat>;
   if (!self.participants || self.participants.length !== 2) {
-    return next(new Error("DM chat must have exactly 2 participants"));
+    throw new Error("DM chat must have exactly 2 participants");
   }
   const [a, b] = self.participants.map((id) => id.toString()).sort();
   self.dmKey = `${a}:${b}`;
-  next();
+
 });
 
 // Unique DM per pair
@@ -82,16 +82,15 @@ const GroupChatExtra = new Schema<IGroupChat>({
 });
 
 // Guard: admins ⊆ participants
-GroupChatExtra.pre<HydratedDocument<IGroupChat>>("validate", function (next: any) {
+GroupChatExtra.pre<HydratedDocument<IGroupChat>>("validate", function () {
   const self = this as HydratedDocument<IGroupChat>;
   const set = new Set(self.participants.map((id) => id.toString()));
   const allAdminsValid = (self.admins || []).every((id) =>
     set.has(id.toString())
   );
   if (!allAdminsValid) {
-    return next(new Error("All admins must also be participants"));
+    throw new Error("All admins must also be participants");
   }
-  next();
 });
 
 export const GroupChatModel = ChatModel.discriminator<IGroupChat>(
