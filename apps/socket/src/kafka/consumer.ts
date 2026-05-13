@@ -18,6 +18,9 @@ export const startConsumer = async () => {
         const value = message.value?.toString();
         if (!value) return;
 
+
+        
+
         const parsedMessage = JSON.parse(value);
 
         // console.log(
