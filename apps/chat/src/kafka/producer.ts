@@ -1,13 +1,14 @@
 // producer.ts
 import { Producer } from "kafkajs";
 import { kafka } from "./client";
+import { Types } from "mongoose";
 
 let producer: Producer;
 
 export const createProducer = async () => {
   producer = kafka.producer();
   await producer.connect();
-  console.log("✅ Kafka Producer connected");
+  console.log("Kafka Producer connected");
   return producer;
 };
 
@@ -16,7 +17,7 @@ export const getProducer = () => {
   return producer;
 };
 
-export const produceChatMessage = async (message: {
+export const sendMessage = async (message: {
   messageId: string;
   chatId: string;
   senderId: string;
@@ -25,10 +26,10 @@ export const produceChatMessage = async (message: {
   attachments?: any[];
   createdAt?: Date;
 }) => {
-  console.log("message", message);
+  // console.log("message", message);
   const prod = getProducer();
   await prod.send({
-    topic: "chat-messages",
+    topic: "send-messages",
     messages: [
       {
         key: message.chatId.toString(),
@@ -37,4 +38,24 @@ export const produceChatMessage = async (message: {
     ],
   });
   console.log(`📤 Message ${message.messageId} sent to Kafka`);
+};
+export const chatCreated = async (message:
+  {
+    type: string;
+    participants: Types.ObjectId[];
+    name?: string;
+    admins?: string[];
+    createdBy: string;
+  }) => {
+  const prod = getProducer();
+  await prod.send({
+    topic: "chat-created",
+    messages: [
+      {
+        key: message.createdBy,
+        value: JSON.stringify(message),
+      }
+    ]
+  });
+  console.log(`📤 Chat ${message.name} created`);
 };

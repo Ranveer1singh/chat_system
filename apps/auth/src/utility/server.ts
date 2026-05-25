@@ -32,6 +32,9 @@ class Server {
         // this.app.use(cookieParser())
     }
     private setupRoute(): void {
+        this.app.get('/health', (req, res) => {
+            res.status(200).json({ status: 'ok' });
+        });
         this.app.use('/api', appRouter)
         this.app.use(notFoundHandler);
         this.app.use(errorHandler);

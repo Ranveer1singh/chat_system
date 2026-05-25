@@ -4,6 +4,7 @@ import {
   IUpdateChat,
 } from "@repo/types/dist/chat";
 import { ChatModel, DMChatModel, GroupChatModel } from "../model.ts/chatModel";
+import { chatCreated } from "../kafka/producer";
 
 class ChatService {
   async create(body: ICreateChat) {
@@ -33,8 +34,7 @@ class ChatService {
         throw new Error("Invalid chat type");
     }
 
-    await chat.save();
-
+    const savedChat = await chat.save();
     // populate only safe fields from User
     // return chat.populate("participants", "name email");
     return chat;

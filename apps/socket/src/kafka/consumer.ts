@@ -9,8 +9,8 @@ export const startConsumer = async () => {
     await consumer.connect();
     console.log("✅ Kafka Consumer connected");
 
-    await consumer.subscribe({ topic: "chat-messages", fromBeginning: true });
-    console.log("📩 Subscribed to topic: chat-messages");
+    await consumer.subscribe({ topic: "send-messages", fromBeginning: true });
+    console.log("📩 Subscribed to topic: send-messages");
 
     await consumer.run({
       eachMessage: async ({ topic, partition, message }) => {
@@ -19,7 +19,7 @@ export const startConsumer = async () => {
         if (!value) return;
 
 
-        
+
 
         const parsedMessage = JSON.parse(value);
 

@@ -1,7 +1,7 @@
 import { Request } from "express";
 import { ChatModel } from "../model.ts/chatModel";
 import { MessageModel } from "../model.ts/messageModel";
-import { produceChatMessage } from "../kafka/producer";
+import { sendMessage } from "../kafka/producer";
 import { ICreateMessage } from "@repo/types/dist/chat";
 
 class MessageService {
@@ -24,7 +24,7 @@ class MessageService {
     });
 
     const savedMessage = await messageDoc.save();
-    await produceChatMessage({
+    await sendMessage({
       messageId: savedMessage._id.toString(),
       chatId,
       senderId,
