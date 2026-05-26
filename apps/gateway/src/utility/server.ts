@@ -40,8 +40,8 @@ class Server {
         //         credentials: true
         //     }
         // ))
-        this.app.use(express.json())
-        this.app.use(express.urlencoded({ extended: true }));
+        // this.app.use(express.json())
+        // this.app.use(express.urlencoded({ extended: true }));
         // this.app.use(cookieParser())
     }
     private setupRoute(): void {
@@ -52,7 +52,7 @@ class Server {
                 target: this.authServiceUrl,
                 changeOrigin: true,
                 on: {
-                    proxyReq: fixRequestBody,
+                    // proxyReq: fixRequestBody,
                     error: (err: Error, req: IncomingMessage, res: ServerResponse<IncomingMessage> | Socket) => {
                         console.error(`[Gateway] Auth proxy error for ${req.method} ${req.url}:`, err.message)
                         if ("writeHead" in res) {
