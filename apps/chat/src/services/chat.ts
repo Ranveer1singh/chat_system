@@ -1,5 +1,5 @@
-import { ChatType } from "@repo/types/dist/chat";
-import type { ICreateChat, IUpdateChat } from "@repo/types/dist/chat";
+import { ChatType } from "@repo/types";
+import type { ICreateChat, IUpdateChat } from "@repo/types";
 import { ChatModel, DMChatModel, GroupChatModel } from "../model.ts/chatModel";
 import { chatCreated } from "../kafka/producer";
 

@@ -1,4 +1,4 @@
-import { createTheme, ThemeProvider, StyledEngineProvider, CssBaseline } from "@mui/material";
+import { createTheme } from "@mui/material";
 
 const theme = createTheme({
   palette: {

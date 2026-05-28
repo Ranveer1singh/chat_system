@@ -21,7 +21,11 @@ const Home = () => {
  
   return (
     <div className="flex h-screen bg-white overflow-hidden">
-
+      {error && (
+        <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3">
+          <p className="text-red-500">{error}</p>
+        </div>
+      )}
      <div className={`${selectedChat ? 'hidden md:flex' : 'flex'} w-full md:w-auto h-full`}>
         <Sidebar 
           users={users} 

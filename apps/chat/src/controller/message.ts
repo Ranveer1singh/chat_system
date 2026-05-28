@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { messageService } from "../services/message";
-import { CreateMessageSchema } from "@repo/types/dist/chat";
+import { CreateMessageSchema } from "@repo/types";
 
 class MessageController {
     async sendMessage(req: Request, res: Response) {

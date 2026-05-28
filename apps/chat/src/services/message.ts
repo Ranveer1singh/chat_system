@@ -2,7 +2,7 @@ import { Request } from "express";
 import { ChatModel } from "../model.ts/chatModel";
 import { MessageModel } from "../model.ts/messageModel";
 import { sendMessage } from "../kafka/producer";
-import { ICreateMessage } from "@repo/types/dist/chat";
+import { ICreateMessage } from "@repo/types";
 
 class MessageService {
 

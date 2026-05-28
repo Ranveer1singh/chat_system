@@ -5,7 +5,7 @@ import {
   CreateChatSchema,
   UpdateChatSchema,
   UserChatsParamsSchema,
-} from "@repo/types/dist/chat";
+} from "@repo/types"
 
 class ChatController {
 
