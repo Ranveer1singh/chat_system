@@ -19,7 +19,7 @@ class UserService {
             }
 
         )
-        return token;
+        return token
     }
 
     async updateUser(id: string, data: IUpdateUser) {

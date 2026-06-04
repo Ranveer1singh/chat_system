@@ -3,6 +3,7 @@ import { createProxyMiddleware, fixRequestBody } from 'http-proxy-middleware';
 import "dotenv/config"
 import { IncomingMessage, ServerResponse } from "http";
 import { Socket } from "net";
+import cors from "cors";
 class Server {
     private app: Application
     private authServiceUrl: string
@@ -33,13 +34,13 @@ class Server {
         })
     }
     private setupMiddleware(): void {
-        // this.app.use(cors(
-        //     {
-        //         origin: ["http://localhost:5173", "http://192.168.1.88:5173"],
-        //         methods: ["GET", "POST", "PUT", "DELETE"],
-        //         credentials: true
-        //     }
-        // ))
+        this.app.use(cors(
+            {
+                origin: ["http://localhost:5173", "http://192.168.1.88:5173"],
+                methods: ["GET", "POST", "PUT", "DELETE"],
+                credentials: true
+            }
+        ))
         // this.app.use(express.json())
         // this.app.use(express.urlencoded({ extended: true }));
         // this.app.use(cookieParser())

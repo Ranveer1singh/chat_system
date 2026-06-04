@@ -1,8 +1,9 @@
 import { Avatar, IconButton, TextField } from '@mui/material';
 import { Search, MoreVert, ArrowBack, TagFaces, AttachFile, Send     } from '@mui/icons-material';
+import type { IChat } from '@repo/types';
 
 interface ChatWindowProps {
-  chat: any;
+  chat: IChat | null | undefined;
   message: string;
   setMessage: (val: string) => void;
   onBack: () => void;
@@ -27,9 +28,10 @@ const ChatWindow = ({ chat, message, setMessage, onBack }: ChatWindowProps) => {
       <div className="bg-white/80 backdrop-blur-md p-3 border-b border-gray-100 flex items-center justify-between sticky top-0 z-10">
         <div className="flex items-center gap-3">
           <IconButton className="md:hidden !text-[#2D6936]" onClick={onBack}><ArrowBack /></IconButton>
-          <Avatar className="!bg-[#2D6936]">{chat.fullName[0]}</Avatar>
+          {/* <Avatar className="!bg-[#2D6936]">{chat.fullName?.[0]}</Avatar> */}
+          <Avatar className="!bg-[#2D6936]">T</Avatar>
           <div>
-            <p className="font-bold text-gray-800 leading-tight">{chat.fullName}</p>
+            <p className="font-bold text-gray-800 leading-tight">T</p>
             <p className="text-[11px] text-[#2D6936] font-medium flex items-center gap-1">
               <span className="w-1.5 h-1.5 bg-[#44b700] rounded-full"></span> Online
             </p>

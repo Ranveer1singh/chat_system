@@ -1,6 +1,6 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import apiWrapper from "../../apiHandler/api";
-import type { IChat, ICreateChat } from "@repo/types";
+import type { ChatSchema, IChat, ICreateChat } from "@repo/types";
 export const createChat = createAsyncThunk<
     IChat,
     ICreateChat,
@@ -22,17 +22,22 @@ export const createChat = createAsyncThunk<
     }
 );
 export const getChatByUserId = createAsyncThunk<
-    IChat[],
+    { success: boolean, chats: IChat[] },
     { userId: string },
     { rejectValue: string }
 >(
     'chat/getChatByUserId',
     async (credentials, { rejectWithValue }) => {
         try {
-            const response = await apiWrapper.get<IChat[]>(
+            const response = await apiWrapper.get<{ success: boolean, data: IChat[] }>(
                 '/chat/user/' + credentials.userId
             );
-            return response.data;
+            // console.log("response from getChatByUserId", response.data);
+            const data = {
+                success: response.data.success,
+                chats: response.data.data
+            }
+            return data;
         } catch (err: any) {
             return rejectWithValue(
                 err?.response?.data?.message ?? 'Failed to fetch user chat'

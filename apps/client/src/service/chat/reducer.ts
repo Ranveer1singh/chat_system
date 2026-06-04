@@ -4,13 +4,13 @@ import { createChat, getChatByUserId } from './thunk';
 
 interface ChatState {
     currentChat: IChat | null;
-    allChats: IChat[]; // Add this line to store all chats
+    allChats: { success: boolean, chats: IChat[] }; // Add this line to store all chats
     loading: boolean;
     error: string | null;
 }
 const initialState: ChatState = {
     currentChat: null,
-    allChats: [], // Initialize the allChats array
+    allChats: { success: false, chats: [] }, // Initialize the allChats object
     loading: false,
     error: null,
 };
@@ -47,6 +47,7 @@ const chatSlice = createSlice({
             .addCase(getChatByUserId.fulfilled, (state, action) => {
                 state.loading = false;
                 state.allChats = action.payload;
+
             })
             .addCase(getChatByUserId.rejected, (state, action) => {
                 state.loading = false;
