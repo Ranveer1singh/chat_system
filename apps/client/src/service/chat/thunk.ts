@@ -1,6 +1,6 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import apiWrapper from "../../apiHandler/api";
-import type { ChatSchema, IChat, ICreateChat } from "@repo/types";
+import type { IChat, ICreateChat } from "@repo/types";
 export const createChat = createAsyncThunk<
     IChat,
     ICreateChat,

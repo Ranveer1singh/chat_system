@@ -1,16 +1,19 @@
 import { createSlice } from '@reduxjs/toolkit'
-import type { IChat } from '@repo/types';
+import type { IChat, IMessage } from '@repo/types';
 import { createChat, getChatByUserId } from './thunk';
+import { getMessagesByChat, sendMessage } from './messageThunk';
 
 interface ChatState {
     currentChat: IChat | null;
-    allChats: { success: boolean, chats: IChat[] }; // Add this line to store all chats
+    allChats: { success: boolean, chats: IChat[] };
+    messages: { success: boolean, messages: IMessage[] };
     loading: boolean;
     error: string | null;
 }
 const initialState: ChatState = {
     currentChat: null,
-    allChats: { success: false, chats: [] }, // Initialize the allChats object
+    allChats: { success: false, chats: [] },
+    messages: { success: false, messages: [] },
     loading: false,
     error: null,
 };
@@ -23,6 +26,9 @@ const chatSlice = createSlice({
         },
         clearChatError: (state) => {
             state.error = null;
+        },
+        addMessage: (state, action) => {
+            state.messages.messages.push(action.payload);
         },
     },
     extraReducers: (builder) => {
@@ -53,8 +59,34 @@ const chatSlice = createSlice({
                 state.loading = false;
                 state.error = action.payload ?? "Failed to fetch user chat";
             });
+        builder
+            .addCase(getMessagesByChat.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+            })
+            .addCase(getMessagesByChat.fulfilled, (state, action) => {
+                state.loading = false;
+                state.messages = action.payload;
+            })
+            .addCase(getMessagesByChat.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.payload ?? "Failed to fetch messages";
+            });
+        builder
+            .addCase(sendMessage.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+            })
+            .addCase(sendMessage.fulfilled, (state, action) => {
+                state.loading = false;
+                state.messages.messages.push(action.payload);
+            })
+            .addCase(sendMessage.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.payload ?? "Failed to send message";
+            });
     },
 });
 
-export const { clearCurrentChat, clearChatError } = chatSlice.actions;
+export const { clearCurrentChat, clearChatError, addMessage } = chatSlice.actions;
 export default chatSlice.reducer;

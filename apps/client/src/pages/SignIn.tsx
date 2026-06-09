@@ -61,7 +61,7 @@ const SignIn = () => {
                         <p className="text-[#2D6936]/60 mt-2">Sign in to continue your journey</p>
                     </div>
                     <form onSubmit={handleSubmit(onSubmit)} >
-                        <div className="space-y-5">
+                        <div className="!space-y-5">
                             <Controller
                                 name="phone"
                                 control={control}

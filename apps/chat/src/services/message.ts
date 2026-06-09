@@ -37,6 +37,13 @@ class MessageService {
 
   }
 
+  async getMessagesByChat(chatId: string) {
+    const messages = await MessageModel.find({ chatId })
+      .populate('senderId', 'name email')
+      .sort({ createdAt: 1 });
+    return messages;
+  }
+
   /**
    * 
    * @param messageId 

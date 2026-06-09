@@ -11,7 +11,8 @@ import {
 } from "@mui/material";
 import { Search, MoreVert, EditNote } from "@mui/icons-material";
 import { createChat } from "../service/chat/thunk";
-import  { ChatType } from "@repo/types";
+// import  { ChatType } from "@repo/types";
+import  { ChatType } from "../dto";
 import { useDispatch } from "react-redux";
 import type { AppDispatch } from "../store";
 

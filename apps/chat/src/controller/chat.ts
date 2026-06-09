@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import { chatService } from "../services/chat";
+import { messageService } from "../services/message";
 import {
   ChatIdParamsSchema,
   CreateChatSchema,
@@ -35,6 +36,16 @@ class ChatController {
       const { userId } = UserChatsParamsSchema.parse(req.params);
       const chats = await chatService.getByUserId(userId);
       res.status(200).json({ success: true, data: chats });
+    } catch (error: any) {
+      res.status(400).json({ success: false, message: error.message });
+    }
+  }
+
+  async getMessages(req: Request, res: Response) {
+    try {
+      const { id } = ChatIdParamsSchema.parse(req.params);
+      const messages = await messageService.getMessagesByChat(id);
+      res.status(200).json({ success: true, data: messages });
     } catch (error: any) {
       res.status(400).json({ success: false, message: error.message });
     }
