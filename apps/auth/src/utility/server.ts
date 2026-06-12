@@ -3,6 +3,7 @@ import dbConnnection from "./db"
 import appRouter from "../routes";
 import "dotenv/config"
 import cors from "cors";
+import morgan from 'morgan'
 import { errorHandler, notFoundHandler } from "../middelwares/errorHandler";
 
 dbConnnection();
@@ -14,6 +15,7 @@ class Server {
 
     }
     public start(): void {
+        this.app.use(morgan('dev'))
         this.setupMiddleware();
         this.setupRoute();
         this.listenServer()

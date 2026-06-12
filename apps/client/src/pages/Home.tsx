@@ -42,6 +42,7 @@ const Home = () => {
       >
         <Sidebar
           users={users}
+          allChats={allChats.chats}
           selectedId={selectedChat?._id}
           onSelectChat={setSelectedChat}
           loading={loading}

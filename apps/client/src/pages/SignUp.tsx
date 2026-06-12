@@ -48,7 +48,7 @@ const SignUp = () => {
                         <p className="text-[#2D6936]/60 mt-2">Let’s begin your journey.</p>
                     </div>
 
-                    <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
+                    <form onSubmit={handleSubmit(onSubmit)} className="!space-y-5">
 
                         {/* User Name Field */}
                         <Controller
