@@ -21,7 +21,7 @@ const Home = () => {
   const { allChats } = useSelector((state: RootState) => state.chat);
   useEffect(() => {
     dispatch(allUser());
-    dispatch(getChatByUserId({ userId: "69c8ceadc0bd08e2f1e96460" }));
+    dispatch(getChatByUserId({ userId: "6a2c2814d2faa0c0f92dfc23" }));
   }, [dispatch]);
   // const userChats = useMemo(() => {
   //   return allChats.chats;

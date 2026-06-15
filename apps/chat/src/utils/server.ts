@@ -1,4 +1,5 @@
 import express, { Application, Request, Response } from "express";
+import morgan from "morgan"
 import dbConnnection from "./db"
 import appRouter from "../routes";
 import "dotenv/config"
@@ -12,6 +13,7 @@ class Server{
         this.app = express()
     }
     public async start():Promise<void>{
+        this.app.use(morgan('dev'))
        this.setupMiddleware();
        this.setupRoute();
        this.listenServer()

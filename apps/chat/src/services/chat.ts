@@ -2,6 +2,7 @@ import { ChatType } from "@repo/types";
 import type { ICreateChat, IUpdateChat } from "@repo/types";
 import { ChatModel, DMChatModel, GroupChatModel } from "../model.ts/chatModel";
 import { chatCreated } from "../kafka/producer";
+import mongoose, { PipelineStage } from "mongoose";
 
 class ChatService {
   async create(body: ICreateChat) {
@@ -37,13 +38,42 @@ class ChatService {
     return chat;
   }
   async getById(id: string) {
-    const chat = await ChatModel.findById(id)
+    const chat = await ChatModel.findById(id);
     if (!chat) throw new Error("Chat not found");
     return chat;
   }
 
   async getByUserId(userId: string) {
-    return ChatModel.find({ participants: userId }).sort({ updatedAt: -1 });
+    try {
+      const pipeline: PipelineStage[] = [
+        {
+          $match: {
+            participants: new mongoose.Types.ObjectId(userId),
+          },
+        },
+        {
+          $lookup: {
+            from: "users",
+            localField: "participants",
+            foreignField: "_id",
+            pipeline: [
+              {
+                $project: {
+                  fullName: 1,
+                  userName: 1,
+                  phone: 1,
+                },
+              },
+            ],
+            as: "participantsDetails",
+          },
+        },
+      ];
+
+      return await ChatModel.aggregate(pipeline);
+    } catch (error) {
+      throw new Error(`Failed to fetch chats + ${(error as any).message}`);
+    }
   }
 
   async update(id: string, updates: IUpdateChat) {

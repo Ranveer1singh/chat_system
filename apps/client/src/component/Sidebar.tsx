@@ -38,7 +38,7 @@ const Sidebar = ({
         type: ChatType.DM,
         participants: [
           userId,
-          "69c8ceadc0bd08e2f1e96460"
+          "6a2c2814d2faa0c0f92dfc23"
         ]
       }))
     } catch (error) {
@@ -98,7 +98,7 @@ const Sidebar = ({
                   handleCreateChat(user._id);
                   onSelectChat(user);
                 }}
-                className={`rounded-2xl mb-1 cursor-pointer transition-all ${selectedId === user._id ? "bg-[#E8F0E8]" : "hover:bg-gray-50"
+                className={`rounded-2xl mb-1 !cursor-pointer transition-all   ${selectedId === user._id ? "bg-[#E8F0E8]" : "!hover:bg-gray-50"
                   }`}
               >
                 <ListItemAvatar>
