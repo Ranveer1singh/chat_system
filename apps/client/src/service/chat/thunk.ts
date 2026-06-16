@@ -1,6 +1,7 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import apiWrapper from "../../apiHandler/api";
-import type { IChat, ICreateChat } from "@repo/types";
+import type { IChat, ICreateChat, UserChat } from "@repo/types";
+import { create_Chat } from "../../backendHelper/chat/backend_helper";
 export const createChat = createAsyncThunk<
 {success : boolean ,data :IChat},
 ICreateChat,
@@ -9,10 +10,7 @@ ICreateChat,
     'chat/createChat',
     async (credentials, { rejectWithValue }) => {
         try {
-            const response = await apiWrapper.post<{success : boolean ,data :IChat}>(
-                '/chat',
-                credentials
-            );
+            const response = await create_Chat(credentials)
             return response.data;
         } catch (err: any) {
             return rejectWithValue(
@@ -22,14 +20,14 @@ ICreateChat,
     }
 );
 export const getChatByUserId = createAsyncThunk<
-    { success: boolean, chats: IChat[] },
+    { success: boolean, chats: UserChat[] },
     { userId: string },
     { rejectValue: string }
 >(
     'chat/getChatByUserId',
     async (credentials, { rejectWithValue }) => {
         try {
-            const response = await apiWrapper.get<{ success: boolean, data: IChat[] }>(
+            const response = await apiWrapper.get<{ success: boolean, data: UserChat[] }>(
                 '/chat/user/' + credentials.userId
             );
             // console.log("response from getChatByUserId", response.data);

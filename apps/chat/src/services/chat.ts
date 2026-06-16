@@ -86,7 +86,6 @@ class ChatService {
     },
   },
 ];
-
       return await ChatModel.aggregate(pipeline);
     } catch (error) {
       throw new Error(`Failed to fetch chats + ${(error as any).message}`);

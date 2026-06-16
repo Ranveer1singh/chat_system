@@ -8,10 +8,12 @@ class Server {
     private app: Application
     private authServiceUrl: string
     private chatServiceUrl: string
+    private messageServiceUrl: string
     constructor() {
         this.app = express()
         this.authServiceUrl = process.env.AUTH_SERVICE_URL || "http://localhost:8080"
         this.chatServiceUrl = process.env.CHAT_SERVICE_URL || "http://localhost:5002"
+        this.messageServiceUrl = process.env.MESSAGE_SERVICE_URL || "http://localhost:5002"
     }
 
     public start(): void {
@@ -70,6 +72,25 @@ class Server {
             "/api/chat",
             createProxyMiddleware({
                 target: this.chatServiceUrl,
+                changeOrigin: true,
+                on: {
+                    proxyReq: fixRequestBody,
+                    error: (err: Error, req: IncomingMessage, res: ServerResponse<IncomingMessage> | Socket) => {
+                        console.error(`[Gateway] Chat proxy error for ${req.method} ${req.url}:`, err.message)
+                        if ("writeHead" in res) {
+                            if (!res.headersSent) {
+                                res.writeHead(502, { "Content-Type": "application/json" })
+                            }
+                            res.end(JSON.stringify({ message: "Chat service unavailable" }))
+                        }
+                    }
+                }
+            })
+        );
+        this.app.use(
+            "/api/message",
+            createProxyMiddleware({
+                target: this.messageServiceUrl,
                 changeOrigin: true,
                 on: {
                     proxyReq: fixRequestBody,

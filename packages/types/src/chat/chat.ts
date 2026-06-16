@@ -17,6 +17,25 @@ export const ChatSchema = z.object({
   createdAt: z.string(),
   updatedAt: z.string(),
 });
+export const ParticipantSchema =z.object({
+  _id: z.string(),
+  fullName : z.string(),
+  phone : z.string(),
+  userName:z.string(),
+})
+export const UserChatsSchema = z.object({
+  _id: z.string(),
+  type: z.nativeEnum(ChatType),
+  participants: z.array(z.string()),
+  participantsDetails : z.array(ParticipantSchema),
+  lastMessage: z.string().nullable(),
+  dmKey: z.string().optional(),
+  name: z.string().optional(),
+  admins: z.array(z.string()).optional(),
+  createdBy: z.string().optional(),
+  createdAt: z.string(),
+  updatedAt: z.string(),
+});
 
 export const CreateChatSchema = ChatSchema.omit({
   _id: true,
@@ -49,3 +68,5 @@ export type ICreateChat = z.infer<typeof CreateChatSchema>;
 export type IChatIdParams = z.infer<typeof ChatIdParamsSchema>;
 export type IUserChatsParams = z.infer<typeof UserChatsParamsSchema>;
 export type IUpdateChat = z.infer<typeof UpdateChatSchema>;
+export type Participant = z.infer<typeof ParticipantSchema>;
+export type UserChat = z.infer<typeof UserChatsSchema>;

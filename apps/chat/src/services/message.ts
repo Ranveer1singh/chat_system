@@ -1,4 +1,3 @@
-import { Request } from "express";
 import { ChatModel } from "../model.ts/chatModel";
 import { MessageModel } from "../model.ts/messageModel";
 import { sendMessage } from "../kafka/producer";

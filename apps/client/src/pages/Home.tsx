@@ -1,11 +1,6 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import type { AppDispatch, RootState } from "../store";
-// import {
-//   List, ListItem, ListItemAvatar, Avatar, ListItemText,
-//   IconButton, TextField, InputAdornment, Badge
-// } from '@mui/material';
-// import { Search, MoreVert, EditNote, Send, ArrowBack, AttachFile, TagFaces, DoneAll } from '@mui/icons-material';
 import { allUser } from "../service/auth/thunk";
 import Sidebar from "../component/Sidebar";
 import ChatWindow from "../component/ChatWindow";
@@ -19,17 +14,17 @@ const Home = () => {
     (state: RootState) => state.auth,
   );
   const { allChats } = useSelector((state: RootState) => state.chat);
+
   useEffect(() => {
     dispatch(allUser());
     dispatch(getChatByUserId({ userId: "6a2c2814d2faa0c0f92dfc23" }));
   }, [dispatch]);
-  // const userChats = useMemo(() => {
-  //   return allChats.chats;
-  // }, [allChats]);
+  
   const chats = allChats?.chats ?? [];
   const selectedChatDetails = chats.find(
     (chat) => chat._id === selectedChat?._id,
   );
+  
   return (
     <div className="flex h-screen bg-white overflow-hidden">
       {error && (

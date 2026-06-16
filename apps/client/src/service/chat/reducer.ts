@@ -1,11 +1,11 @@
 import { createSlice } from '@reduxjs/toolkit'
-import type { IChat, IMessage } from '@repo/types';
+import type { IChat, IMessage, UserChat } from '@repo/types';
 import { createChat, getChatByUserId } from './thunk';
 import { getMessagesByChat, sendMessage } from './messageThunk';
 
 interface ChatState {
     currentChat: IChat | null;
-    allChats: { success: boolean, chats: IChat[] };
+    allChats: { success: boolean, chats: UserChat[] };
     messages: { success: boolean, messages: IMessage[] };
     loading: boolean;
     error: string | null;

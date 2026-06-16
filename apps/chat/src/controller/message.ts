@@ -11,6 +11,15 @@ class MessageController {
             data: message
         })
     }
+
+    async getMessageByChatId(req : Request, res: Response){
+        const chatId = req.params
+        const message = await messageService.getMessagesByChat(chatId.toString())
+        res.status(200).json({
+            success : true,
+            data : message
+        })
+    }
 }
 
 export const messageController = new MessageController()
