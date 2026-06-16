@@ -43,7 +43,6 @@ const Sidebar = ({
       );
     } catch (error) {}
   };
-  console.log("all chats sidebar--->>", allChats);
 
   return (
     <div className="w-full md:w-[400px] border-r border-gray-100 flex flex-col h-full bg-white">
