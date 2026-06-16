@@ -18,7 +18,7 @@ import type { AppDispatch } from "../store";
 
 interface SidebarProps {
   users: any[];
-  allChats:any[];
+  allChats: any[];
   selectedId: string | null;
   onSelectChat: (user: any) => void;
   loading: boolean;
@@ -26,6 +26,7 @@ interface SidebarProps {
 
 const Sidebar = ({
   users,
+  allChats,
   selectedId,
   onSelectChat,
   loading,
@@ -34,17 +35,15 @@ const Sidebar = ({
 
   const handleCreateChat = async (userId: string) => {
     try {
-      dispatch(createChat({
-        type: ChatType.DM,
-        participants: [
-          userId,
-          "6a2c2814d2faa0c0f92dfc23"
-        ]
-      }))
-    } catch (error) {
-
-    }
-  }
+      dispatch(
+        createChat({
+          type: ChatType.DM,
+          participants: [userId, "6a2c2814d2faa0c0f92dfc23"],
+        }),
+      );
+    } catch (error) {}
+  };
+  console.log("all chats sidebar--->>", allChats);
 
   return (
     <div className="w-full md:w-[400px] border-r border-gray-100 flex flex-col h-full bg-white">
@@ -79,17 +78,16 @@ const Sidebar = ({
         />
       </div>
 
-      
-
+      {/* user list  */}
       <div className="userList">
         <div className="user_header">
-          <h2 className="mt-2 px-2 text-xl font-bold !text-gray-800" >
-            Users
-          </h2>
+          <h2 className="mt-2 px-2 text-xl font-bold !text-gray-800">Users</h2>
         </div>
         <List className="flex-grow overflow-y-auto mt-2 px-2">
           {loading ? (
-            <p className="text-center text-gray-400 mt-4">Loading gardeners...</p>
+            <p className="text-center text-gray-400 mt-4">
+              Loading gardeners...
+            </p>
           ) : (
             users.map((user) => (
               <ListItem
@@ -98,8 +96,9 @@ const Sidebar = ({
                   handleCreateChat(user._id);
                   onSelectChat(user);
                 }}
-                className={`rounded-2xl mb-1 !cursor-pointer transition-all   ${selectedId === user._id ? "bg-[#E8F0E8]" : "!hover:bg-gray-50"
-                  }`}
+                className={`rounded-2xl mb-1 !cursor-pointer transition-all   ${
+                  selectedId === user._id ? "bg-[#E8F0E8]" : "!hover:bg-gray-50"
+                }`}
               >
                 <ListItemAvatar>
                   <Badge
@@ -134,56 +133,49 @@ const Sidebar = ({
           )}
         </List>
       </div>
+      {/* chat list */}
       <div className="chatList">
         <div className="chat_header">
-          <h2 className="mt-2 px-2 text-xl font-bold !text-gray-800" >
-            Chats 
-          </h2>
+          <h2 className="mt-2 px-2 text-xl font-bold !text-gray-800">Chats</h2>
         </div>
         <List className="flex-grow overflow-y-auto mt-2 px-2">
           {loading ? (
-            <p className="text-center text-gray-400 mt-4">Loading gardeners...</p>
+            <p className="text-center text-gray-400 mt-4">Loading chats...</p>
           ) : (
-            users.map((user) => (
-              <ListItem
-                key={user._id}
-                onClick={() => {
-                  handleCreateChat(user._id);
-                  onSelectChat(user);
-                }}
-                className={`rounded-2xl mb-1 cursor-pointer transition-all ${selectedId === user._id ? "bg-[#E8F0E8]" : "hover:bg-gray-50"
+            allChats.map((chat) => {
+              const participant = chat.participantsDetails?.[0];
+
+              return (
+                <ListItem
+                  key={chat._id}
+                  onClick={() => onSelectChat(chat)}
+                  className={`rounded-2xl mb-1 cursor-pointer transition-all ${
+                    selectedId === chat._id
+                      ? "bg-[#E8F0E8]"
+                      : "hover:bg-gray-50"
                   }`}
-              >
-                <ListItemAvatar>
-                  <Badge
-                    overlap="circular"
-                    anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
-                    variant="dot"
-                    invisible={!user.active}
-                    sx={{ "& .MuiBadge-badge": { backgroundColor: "#44b700" } }}
-                  >
+                >
+                  <ListItemAvatar>
                     <Avatar className="!bg-[#2D6936] !text-[#E8F0E8] shadow-sm">
-                      {user.fullName[0].toUpperCase()}
-                      {/* T */}
+                      {participant?.fullName?.[0]?.toUpperCase() || "?"}
                     </Avatar>
-                  </Badge>
-                </ListItemAvatar>
-                <ListItemText
-                  primary={
-                    <span className="text-[15px] font-semibold text-gray-800">
-                      {user.fullName}
-                      {/* T */}
-                    </span>
-                  }
-                  secondary={
-                    <span className="text-xs text-gray-400">
-                      @{user.userName}
-                      {/* @T */}
-                    </span>
-                  }
-                />
-              </ListItem>
-            ))
+                  </ListItemAvatar>
+
+                  <ListItemText
+                    primary={
+                      <span className="text-[15px] font-semibold text-gray-800">
+                        {participant?.fullName}
+                      </span>
+                    }
+                    secondary={
+                      <span className="text-xs text-gray-400">
+                        @{participant?.userName}
+                      </span>
+                    }
+                  />
+                </ListItem>
+              );
+            })
           )}
         </List>
       </div>

@@ -46,29 +46,46 @@ class ChatService {
   async getByUserId(userId: string) {
     try {
       const pipeline: PipelineStage[] = [
+  {
+    $match: {
+      participants: new mongoose.Types.ObjectId(userId),
+    },
+  },
+  {
+    $lookup: {
+      from: "users",
+      localField: "participants",
+      foreignField: "_id",
+      pipeline: [
         {
-          $match: {
-            participants: new mongoose.Types.ObjectId(userId),
+          $project: {
+            fullName: 1,
+            userName: 1,
+            phone: 1,
           },
         },
-        {
-          $lookup: {
-            from: "users",
-            localField: "participants",
-            foreignField: "_id",
-            pipeline: [
-              {
-                $project: {
-                  fullName: 1,
-                  userName: 1,
-                  phone: 1,
-                },
-              },
+      ],
+      as: "participantsDetails",
+    },
+  },
+  // exclude logged in user 
+  {
+    $addFields: {
+      participantsDetails: {
+        $filter: {
+          input: "$participantsDetails",
+          as: "participant",
+          cond: {
+            $ne: [
+              "$$participant._id",
+              new mongoose.Types.ObjectId(userId),
             ],
-            as: "participantsDetails",
           },
         },
-      ];
+      },
+    },
+  },
+];
 
       return await ChatModel.aggregate(pipeline);
     } catch (error) {

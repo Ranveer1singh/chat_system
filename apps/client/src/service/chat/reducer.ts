@@ -39,8 +39,9 @@ const chatSlice = createSlice({
             })
             .addCase(createChat.fulfilled, (state, action) => {
                 state.loading = false;
-                state.currentChat = action.payload;
-                state.allChats.chats.unshift(action.payload)
+                state.currentChat = action.payload.data;
+                // console.log("user chats--->>>" , action.payload)
+                // state.allChats.chats.unshift(action.payload.data)
             })
             .addCase(createChat.rejected, (state, action) => {
                 state.loading = false;
