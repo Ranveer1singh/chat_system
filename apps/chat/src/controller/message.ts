@@ -13,7 +13,8 @@ class MessageController {
     }
 
     async getMessageByChatId(req : Request, res: Response){
-        const chatId = req.params
+        const {chatId} = req.params
+        console.log("Chat ID received in controller:", chatId);
         const message = await messageService.getMessagesByChat(chatId.toString())
         res.status(200).json({
             success : true,

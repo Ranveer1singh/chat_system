@@ -11,9 +11,8 @@ import type { IChat, IMessage, MessageType } from "../dto";
 import { useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import type { AppDispatch, RootState } from "../store";
-import { getMessagesByChat, sendMessage } from "../service/chat/messageThunk";
 import { useSocket } from "../hooks/useSocket";
-import { sendMessagee } from "../service/message/thunk";
+import { getMessagesByChatId, sendMessagee } from "../service/message/thunk";
 
 interface ChatWindowProps {
   chat: IChat | null | undefined;
@@ -25,7 +24,7 @@ interface ChatWindowProps {
 const ChatWindow = ({ chat, message, setMessage, onBack }: ChatWindowProps) => {
   const dispatch = useDispatch<AppDispatch>();
   // const { messages } = useSelector((state: RootState) => state.chat)
-  const { messages } = useSelector((state: RootState) => state.message);
+  const { messages , allMessages} = useSelector((state: RootState) => state.message);
 
   const { users } = useSelector((state: RootState) => state.auth);
   const messagesEndRef = useRef<HTMLDivElement>(null);
@@ -39,14 +38,15 @@ const ChatWindow = ({ chat, message, setMessage, onBack }: ChatWindowProps) => {
   // Fetch messages when chat changes
   useEffect(() => {
     if (chat?._id) {
-      dispatch(getMessagesByChat({ chatId: chat._id }));
+      dispatch(getMessagesByChatId({ chatId: chat._id }));
     }
   }, [chat?._id, dispatch]);
 
+  console.log("messages in chat window--->>>", allMessages)
   // Auto-scroll to bottom when new messages arrive
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, [messages.messages]);
+  }, [allMessages.messages]);
 
   const onSendMessage = () => {
     if (!message.trim() || !chat?._id) return;
@@ -124,7 +124,7 @@ const ChatWindow = ({ chat, message, setMessage, onBack }: ChatWindowProps) => {
 
       {/* Messages */}
       <div className="flex-1 overflow-y-auto p-4 space-y-4 flex flex-col">
-        {messages.messages.length === 0 ? (
+        {allMessages.messages.length === 0 ? (
           <div className="flex-1 flex items-center justify-center">
             <p className="text-gray-400">
               No messages yet. Start the conversation!
@@ -137,9 +137,9 @@ const ChatWindow = ({ chat, message, setMessage, onBack }: ChatWindowProps) => {
                 Today
               </span>
             </div>
-            {messages.messages.map((msg: IMessage) => (
+            {allMessages.messages.map((msg: IMessage) => (
               <div
-                key={msg._id}
+                key={msg._id} 
                 className={`flex ${msg.senderId === currentUserId ? "justify-end" : "justify-start"}`}
               >
                 <div
