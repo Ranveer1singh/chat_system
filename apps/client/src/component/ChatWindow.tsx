@@ -15,35 +15,32 @@ import { useSocket } from "../hooks/useSocket";
 import { getMessagesByChatId, sendMessagee } from "../service/message/thunk";
 
 interface ChatWindowProps {
+  loggedInUser: any;
   chat: IChat | null | undefined;
   message: string;
   setMessage: (val: string) => void;
   onBack: () => void;
 }
 
-const ChatWindow = ({ chat, message, setMessage, onBack }: ChatWindowProps) => {
+const ChatWindow = ({ loggedInUser,chat, message, setMessage, onBack }: ChatWindowProps) => {
+
   const dispatch = useDispatch<AppDispatch>();
-  // const { messages } = useSelector((state: RootState) => state.chat)
-  const { messages , allMessages} = useSelector((state: RootState) => state.message);
+
+  const { allMessages} = useSelector((state: RootState) => state.message);
 
   const { users } = useSelector((state: RootState) => state.auth);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
-  // Current user ID (you can pass this as prop or get from auth state)
-  const currentUserId = "6a2c2814d2faa0c0f92dfc23";
+  const currentUserId = loggedInUser?.id;
 
-  // Setup socket listener for real-time messages
   useSocket(chat?._id);
 
-  // Fetch messages when chat changes
   useEffect(() => {
     if (chat?._id) {
       dispatch(getMessagesByChatId({ chatId: chat._id }));
     }
   }, [chat?._id, dispatch]);
 
-  console.log("messages in chat window--->>>", allMessages)
-  // Auto-scroll to bottom when new messages arrive
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [allMessages.messages]);

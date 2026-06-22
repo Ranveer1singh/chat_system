@@ -9,31 +9,41 @@ import { getChatByUserId } from "../service/chat/thunk";
 const Home = () => {
   const [selectedChat, setSelectedChat] = useState<any>(null);
   const [message, setMessage] = useState("");
+
   const dispatch = useDispatch<AppDispatch>();
+
   const { loading, error, users} = useSelector(
     (state: RootState) => state.auth,
   );
-  const { loading : loggedInUserLoading, error : loggedInUserError, loggedInUser } = useSelector(
+
+  const { loggedInUser } = useSelector(
     (state: RootState) => state.loggedInUser,
   );
+
   const { allChats } = useSelector((state: RootState) => state.chat);
 
   useEffect(() => {
     dispatch(GetLoggedInUser());
     dispatch(allUser());
-    // dispatch(getChatByUserId({ userId: logedInUser.id }));
   }, [dispatch]);
+
+
   useEffect(() => {
   if (loggedInUser?.id) {
     dispatch(getChatByUserId({ userId: loggedInUser.id }));
   }
 }, [loggedInUser?.id, dispatch]);
+
+
   const chats = allChats?.chats ?? [];
+
   const selectedChatDetails = useMemo(() => {
   return chats.find(
     (chat) => chat._id === selectedChat?._id
   );
 }, [chats, selectedChat]);
+
+
   return (
     <div className="flex h-screen bg-white overflow-hidden">
       {error && (
@@ -57,6 +67,7 @@ const Home = () => {
         className={`${!selectedChat ? "hidden md:flex" : "flex"} flex-1 h-full`}
       >
         <ChatWindow
+        loggedInUser={loggedInUser}
           chat={selectedChatDetails}
           message={message}
           setMessage={setMessage}
