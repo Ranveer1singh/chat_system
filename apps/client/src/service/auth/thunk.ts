@@ -1,6 +1,7 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import apiWrapper from '../../apiHandler/api';
-import { login } from '../../backendHelper/auth/backend_helper';
+import { getLogedInUser, login } from '../../backendHelper/auth/backend_helper';
+import type { IAuthUser } from '@repo/types';
 interface LoginResponse {
     token: string;
 }
@@ -66,6 +67,23 @@ export const allUser = createAsyncThunk<
         } catch (err: any) {
             return rejectWithValue(
                 err?.response?.data?.message ?? 'Failed to fetch users'
+            );
+        }
+    }
+);
+export const GetLoggedInUser = createAsyncThunk<
+    { sucess: boolean, user: IAuthUser },
+    void,
+    { rejectValue: string }
+>(
+    'auth/getLoggedInUser',
+    async (_: void, { rejectWithValue }) => {
+        try {
+            const response = await getLogedInUser();
+            return response.data
+        } catch (err: any) {
+            return rejectWithValue(
+                err?.response?.data?.message ?? 'Failed to fetch logged-in user'
             );
         }
     }

@@ -34,6 +34,12 @@ class UserController {
     async login(req: Request, res: Response) {
         const loginData = loginSchema.parse(req.body);
         const token = await userService.login(loginData);
+        res.cookie("token", token, {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === "production",
+            sameSite: "strict",
+            maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
+        });
         res.status(200).json({ success: true, token });
     }
     async loginUser(req: Request, res: Response) {
@@ -43,7 +49,12 @@ class UserController {
             throw new AppError("Authenticated user not found on request.", 401);
         }
 
-        res.status(200).json({ success: true, user });
+        res.status(200).json({ success: true, user : {
+            id:user.id,
+            fullName: user.fullName,
+            phone: user.phone,
+            role: user.role
+        } });
     }
 }
 

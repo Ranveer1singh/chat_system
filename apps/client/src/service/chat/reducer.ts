@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit'
 import type { IChat, IMessage, UserChat } from '@repo/types';
 import { createChat, getChatByUserId } from './thunk';
-import { getMessagesByChat, sendMessage } from './messageThunk';
+// import { getMessagesByChat, sendMessage } from './messageThunk';
 
 interface ChatState {
     currentChat: IChat | null;
@@ -60,32 +60,6 @@ const chatSlice = createSlice({
             .addCase(getChatByUserId.rejected, (state, action) => {
                 state.loading = false;
                 state.error = action.payload ?? "Failed to fetch user chat";
-            });
-        builder
-            .addCase(getMessagesByChat.pending, (state) => {
-                state.loading = true;
-                state.error = null;
-            })
-            .addCase(getMessagesByChat.fulfilled, (state, action) => {
-                state.loading = false;
-                state.messages = action.payload;
-            })
-            .addCase(getMessagesByChat.rejected, (state, action) => {
-                state.loading = false;
-                state.error = action.payload ?? "Failed to fetch messages";
-            });
-        builder
-            .addCase(sendMessage.pending, (state) => {
-                state.loading = true;
-                state.error = null;
-            })
-            .addCase(sendMessage.fulfilled, (state, action) => {
-                state.loading = false;
-                state.messages.messages.push(action.payload);
-            })
-            .addCase(sendMessage.rejected, (state, action) => {
-                state.loading = false;
-                state.error = action.payload ?? "Failed to send message";
             });
     },
 });

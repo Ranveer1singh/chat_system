@@ -1,7 +1,7 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import type { AppDispatch, RootState } from "../store";
-import { allUser } from "../service/auth/thunk";
+import { allUser, GetLoggedInUser } from "../service/auth/thunk";
 import Sidebar from "../component/Sidebar";
 import ChatWindow from "../component/ChatWindow";
 import { getChatByUserId } from "../service/chat/thunk";
@@ -10,21 +10,30 @@ const Home = () => {
   const [selectedChat, setSelectedChat] = useState<any>(null);
   const [message, setMessage] = useState("");
   const dispatch = useDispatch<AppDispatch>();
-  const { loading, error, users } = useSelector(
+  const { loading, error, users} = useSelector(
     (state: RootState) => state.auth,
+  );
+  const { loading : loggedInUserLoading, error : loggedInUserError, loggedInUser } = useSelector(
+    (state: RootState) => state.loggedInUser,
   );
   const { allChats } = useSelector((state: RootState) => state.chat);
 
   useEffect(() => {
+    dispatch(GetLoggedInUser());
     dispatch(allUser());
-    dispatch(getChatByUserId({ userId: "6a2c2814d2faa0c0f92dfc23" }));
+    // dispatch(getChatByUserId({ userId: logedInUser.id }));
   }, [dispatch]);
-  
+  useEffect(() => {
+  if (loggedInUser?.id) {
+    dispatch(getChatByUserId({ userId: loggedInUser.id }));
+  }
+}, [loggedInUser?.id, dispatch]);
   const chats = allChats?.chats ?? [];
-  const selectedChatDetails = chats.find(
-    (chat) => chat._id === selectedChat?._id,
+  const selectedChatDetails = useMemo(() => {
+  return chats.find(
+    (chat) => chat._id === selectedChat?._id
   );
-  
+}, [chats, selectedChat]);
   return (
     <div className="flex h-screen bg-white overflow-hidden">
       {error && (

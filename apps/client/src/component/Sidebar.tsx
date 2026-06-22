@@ -15,6 +15,7 @@ import { createChat } from "../service/chat/thunk";
 import { ChatType } from "../dto";
 import { useDispatch } from "react-redux";
 import type { AppDispatch } from "../store";
+import React from "react";
 
 interface SidebarProps {
   users: any[];
@@ -182,4 +183,4 @@ const Sidebar = ({
   );
 };
 
-export default Sidebar;
+export default React.memo(Sidebar);

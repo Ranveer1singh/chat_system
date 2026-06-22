@@ -8,7 +8,7 @@ import {
   Send,
 } from "@mui/icons-material";
 import type { IChat, IMessage, MessageType } from "../dto";
-import { useEffect, useRef } from "react";
+import React, { useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import type { AppDispatch, RootState } from "../store";
 import { useSocket } from "../hooks/useSocket";
@@ -202,4 +202,4 @@ const ChatWindow = ({ chat, message, setMessage, onBack }: ChatWindowProps) => {
   );
 };
 
-export default ChatWindow;
+export default React.memo(ChatWindow);

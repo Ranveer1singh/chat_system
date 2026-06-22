@@ -1,7 +1,8 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { allUser, createUser, loginUser, type AllUsersResponse } from './thunk';
+import { allUser, createUser,  loginUser, type AllUsersResponse } from './thunk';
+import type { IAuthUser, IUser } from '@repo/types';
 interface AuthState {
-    user: any | null;
+    user: IUser | null;
     users: AllUsersResponse
     token: string | null;
     loading: boolean;
