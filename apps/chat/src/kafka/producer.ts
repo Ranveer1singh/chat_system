@@ -72,4 +72,4 @@ export const getMessagesByChat = async(chatId:string, messages : any[])=>{
     ]
   });
   console.log(`📤 Messages for chat ${chatId} sent to Kafka`);
-} 
+}
