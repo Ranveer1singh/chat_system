@@ -16,13 +16,11 @@ export const useSocket = (chatId?: string) => {
         // Initialize socket connection
         if (!socket) {
             socket = io(import.meta.env.VITE_SOCKET_URL || 'http://localhost:3002', {
+                withCredentials: true,
                 reconnection: true,
                 reconnectionDelay: 1000,
                 reconnectionDelayMax: 5000,
                 reconnectionAttempts: 5,
-                auth: {
-                    token: localStorage.getItem('token'),
-                },
             });
 
             socket.on('connect', () => {

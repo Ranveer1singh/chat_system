@@ -1,8 +1,8 @@
 import type { NextFunction, Request, Response } from "express";
-import { extractBearerToken, verifyAccessToken } from "@repo/utility";
+import { extractAccessToken, verifyAccessToken } from "@repo/utility";
 
 export const authenticate = (req: Request, res: Response, next: NextFunction): void => {
-  const token = extractBearerToken(req.get("Authorization"));
+  const token = extractAccessToken(req.get("Authorization"), req.get("Cookie"));
 
   if (!token) {
     res.status(401).json({ success: false, message: "Authentication token is required" });

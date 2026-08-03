@@ -3,7 +3,7 @@ import apiWrapper from '../../apiHandler/api';
 import { getLogedInUser, login } from '../../backendHelper/auth/backend_helper';
 import type { IAuthUser } from '@repo/types';
 interface LoginResponse {
-    token: string;
+    success: boolean;
 }
 interface User {
     _id: string;
@@ -24,7 +24,6 @@ export const loginUser = createAsyncThunk<
     async (credentials, { rejectWithValue }) => {
         try {
             const response = await login(credentials);
-            localStorage.setItem('token', response.data.token);
             return response.data;
         } catch (err: any) {
             return rejectWithValue(
@@ -45,7 +44,6 @@ export const createUser = createAsyncThunk<
                 '/user',
                 credentials
             );
-            localStorage.setItem('token', response.data.token);
             return response.data;
         } catch (err: any) {
             return rejectWithValue(

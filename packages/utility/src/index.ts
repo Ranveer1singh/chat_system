@@ -39,6 +39,25 @@ export const extractBearerToken = (authorization?: string): string | null => {
   return scheme === "Bearer" && token ? token : null;
 };
 
+export const extractCookieToken = (cookieHeader?: string): string | null => {
+  if (!cookieHeader) return null;
+
+  const tokenCookie = cookieHeader
+    .split(";")
+    .map((cookie) => cookie.trim())
+    .find((cookie) => cookie.startsWith("token="));
+
+  if (!tokenCookie) return null;
+
+  const token = tokenCookie.slice("token=".length);
+  return token ? decodeURIComponent(token) : null;
+};
+
+export const extractAccessToken = (
+  authorization?: string,
+  cookieHeader?: string,
+): string | null => extractBearerToken(authorization) ?? extractCookieToken(cookieHeader);
+
 export const signAccessToken = (payload: AuthUserPayload): string => {
   const expiresIn = (process.env.JWT_EXPIRES_IN ||
     DEFAULT_TOKEN_EXPIRY) as SignOptions["expiresIn"];

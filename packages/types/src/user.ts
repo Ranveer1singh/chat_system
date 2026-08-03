@@ -27,7 +27,9 @@ export const AuthUser = z.object({
 
 
 // ✅ Schema for creating a new user (omit _id)
-export const CreateUserSchema = UserSchema.omit({ _id: true, isActive: true, role: true });
+export const CreateUserSchema = UserSchema
+    .omit({ _id: true, isActive: true, role: true })
+    .extend({ password: z.string().min(8) });
 export const UpdateUserSchema = UserSchema.pick({ fullName: true, phone: true, userName: true }).partial();
 
 // ✅ TypeScript types inferred from Zod schemas

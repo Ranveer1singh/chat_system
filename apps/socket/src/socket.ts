@@ -25,8 +25,9 @@ const canJoinChat = async (chatId: string, accessToken: string): Promise<boolean
 export const initSocket = (httpServer: HttpServer): void => {
   io = new Server(httpServer, {
     cors: {
-      origin: "*",
-      methods: ["GET", "POST"]
+      origin: (process.env.CLIENT_ORIGIN || "http://localhost:5173").split(","),
+      methods: ["GET", "POST"],
+      credentials: true,
     },
   });
 

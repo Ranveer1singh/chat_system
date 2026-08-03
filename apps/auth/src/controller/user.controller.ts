@@ -2,13 +2,26 @@ import { Request, Response } from "express";
 import { userService } from "../service/user";
 import { CreateUserSchema, loginSchema, UpdateUserSchema } from "@repo/types"
 import { AppError } from "../utility/appError";
+import { clearLoginRateLimit } from "../middelwares/loginRateLimit";
+
+const SESSION_MAX_AGE_MS = Number(process.env.JWT_COOKIE_MAX_AGE_MS) || 60 * 60 * 1000;
+
+const sessionCookieOptions = {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "production",
+    sameSite: "strict" as const,
+    maxAge: SESSION_MAX_AGE_MS,
+    path: "/",
+};
 
 class UserController {
     // Create
     async create(req: Request, res: Response) {
         const data = CreateUserSchema.parse(req.body)
-        const user = await userService.createUser(data);
-        res.status(201).json({ success: true, token: user });
+        const token = await userService.createUser(data);
+        clearLoginRateLimit(req);
+        res.cookie("token", token, sessionCookieOptions);
+        res.status(201).json({ success: true });
     }
 
     // Update
@@ -34,16 +47,12 @@ class UserController {
     async login(req: Request, res: Response) {
         const loginData = loginSchema.parse(req.body);
         const token = await userService.login(loginData);
-        res.cookie("token", token, {
-            httpOnly: true,
-            secure: process.env.NODE_ENV === "production",
-            sameSite: "strict",
-            maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
-        });
-        res.status(200).json({ success: true, token });
+        clearLoginRateLimit(req);
+        res.cookie("token", token, sessionCookieOptions);
+        res.status(200).json({ success: true });
     }
     async loginUser(req: Request, res: Response) {
-        const { user } = req as any;
+        const { user } = req;
 
         if (!user) {
             throw new AppError("Authenticated user not found on request.", 401);
@@ -55,6 +64,16 @@ class UserController {
             phone: user.phone,
             role: user.role
         } });
+    }
+
+    async logout(_req: Request, res: Response) {
+        res.clearCookie("token", {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === "production",
+            sameSite: "strict",
+            path: "/",
+        });
+        res.status(204).send();
     }
 }
 

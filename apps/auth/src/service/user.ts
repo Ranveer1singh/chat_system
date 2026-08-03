@@ -34,12 +34,11 @@ class UserService {
     }
 
     async listUsers() {
-        //filter , sort, pagination 
-        return UserModel.find().select("-password");
+        return UserModel.find({ isActive: true }).select("_id fullName userName isActive");
     }
 
     async getUserById(id: string) {
-        const user = await UserModel.findById(id).select("-password");
+        const user = await UserModel.findById(id).select("_id fullName userName phone isActive role");
         if (!user) {
             throw new AppError("User not found", 404);
         }
@@ -54,14 +53,18 @@ class UserService {
             throw new AppError("Phone and password are required", 400);
         }
 
-        const exitsUser = await UserModel.findOne({ phone });
+        const exitsUser = await UserModel.findOne({ phone }).select("+password");
         if (!exitsUser) {
-            throw new AppError("User name is not valid", 401);
+            throw new AppError("Invalid phone or password", 401);
         }
 
         const isMatch = await bcrypt.compare(password, exitsUser.password);
         if (!isMatch) {
-            throw new AppError("Invalid credentials", 401);
+            throw new AppError("Invalid phone or password", 401);
+        }
+
+        if (!exitsUser.isActive) {
+            throw new AppError("Invalid phone or password", 401);
         }
 
         const token = accessToken({

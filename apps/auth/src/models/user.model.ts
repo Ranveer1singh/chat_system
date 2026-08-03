@@ -28,13 +28,13 @@ const userSchema: Schema<IUser> = new mongoose.Schema(
         phone: {
             type: String,
             required: true,
-            // unique: true,
+            unique: true,
             trim: true,
         },
         password: {
             type: String,
             required: true,
-            // select: false
+            select: false,
         },
         isActive: {
             type: Boolean,

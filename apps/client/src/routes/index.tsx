@@ -2,10 +2,12 @@ import { createFileRoute , redirect } from '@tanstack/react-router'
 import Home from '../pages/Home'
 // import SplashContainer from '../component/Splash/SplashContainer'
 export const Route = createFileRoute('/')({
-  beforeLoad: () => {
-    const token = localStorage.getItem('token')
+  beforeLoad: async () => {
+    const response = await fetch(`${import.meta.env.VITE_API_URL}/user/me`, {
+      credentials: 'include',
+    });
 
-    if (!token) {
+    if (!response.ok) {
       throw redirect({
         to: '/login',
       })
