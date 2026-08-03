@@ -1,10 +1,11 @@
 import { Router } from "express";
 import chatRoute from "./chatroutes";
 import messageRoute from "./messageroutes";
+import { authenticate } from "../middleware/authenticate";
 
 const appRouter = Router();
 
-// Create user
+appRouter.use(authenticate);
 appRouter.use("/chat", chatRoute);
 appRouter.use("/message", messageRoute);
 

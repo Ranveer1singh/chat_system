@@ -25,7 +25,14 @@ const messageSlice = createSlice({
     //     state.error = null;
     // },
     addMessage: (state, action) => {
-      state.messages.messages.push(action.payload);
+      const exists = state.allMessages.messages.some(
+        (message) => message._id === action.payload._id,
+      );
+
+      if (!exists) {
+        state.allMessages.success = true;
+        state.allMessages.messages.push(action.payload);
+      }
     },
   },
   extraReducers: (builder) => {

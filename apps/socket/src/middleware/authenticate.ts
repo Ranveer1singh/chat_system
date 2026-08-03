@@ -1,26 +1,26 @@
 import { Socket } from "socket.io";
-import jwt, { JwtPayload } from "jsonwebtoken";
+import { extractBearerToken, verifyAccessToken } from "@repo/utility";
+import type { AuthUserPayload } from "@repo/utility";
 
 export interface AuthenticatedSocket extends Socket {
-  user?: string | JwtPayload;
+  user?: AuthUserPayload;
 }
 
 /**
  * Middleware to authenticate socket connections using JWT
  */
 export const authenticateSocket = (socket: AuthenticatedSocket, next: (err?: Error) => void): void => {
-  const token = socket.handshake.auth?.token || socket.handshake.query?.token;
+  const rawToken = socket.handshake.auth?.token || socket.handshake.query?.token;
+  const token = typeof rawToken === "string" ? rawToken : undefined;
 
   if (!token) {
     return next(new Error("Authentication error: No token provided"));
   }
 
   try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET || "development");
-    socket.user = decoded;
+    socket.user = verifyAccessToken(extractBearerToken(token) ?? token);
     next();
-  } catch (err) {
-    console.log("JWT verification failed:", err);
+  } catch {
     next(new Error("Authentication error: Invalid token"));
   }
 };

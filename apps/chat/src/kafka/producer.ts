@@ -59,3 +59,17 @@ export const chatCreated = async (message:
   });
   console.log(`📤 Chat ${message.name} created`);
 };
+
+export const getMessagesByChat = async(chatId:string, messages : any[])=>{
+  const prod = getProducer();
+  await prod.send({
+    topic: "get-messages-by-chat",
+    messages: [
+      {
+        key: chatId,
+        value: JSON.stringify(messages),
+      }
+    ]
+  });
+  console.log(`📤 Messages for chat ${chatId} sent to Kafka`);
+} 

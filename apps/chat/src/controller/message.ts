@@ -4,8 +4,16 @@ import { CreateMessageSchema } from "@repo/types";
 
 class MessageController {
     async sendMessage(req: Request, res: Response) {
-        const data = CreateMessageSchema.parse(req.body)
-        const message = await messageService.send(req.body)
+        if (!req.user) {
+            res.status(401).json({ success: false, message: "Authentication is required" });
+            return;
+        }
+
+        const data = CreateMessageSchema.parse({
+            ...req.body,
+            senderId: req.user.id,
+        });
+        const message = await messageService.send(data)
         res.status(201).json({
             success: true,
             data: message

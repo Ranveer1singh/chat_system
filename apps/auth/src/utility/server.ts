@@ -1,7 +1,6 @@
 import express, { Application } from "express";
 import dbConnnection from "./db"
 import appRouter from "../routes";
-import "dotenv/config"
 import cors from "cors";
 import morgan from 'morgan'
 import { errorHandler, notFoundHandler } from "../middelwares/errorHandler";

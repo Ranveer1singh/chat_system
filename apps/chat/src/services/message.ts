@@ -1,6 +1,6 @@
 import { ChatModel } from "../model.ts/chatModel";
 import { MessageModel } from "../model.ts/messageModel";
-import { sendMessage } from "../kafka/producer";
+import { getMessagesByChat, sendMessage } from "../kafka/producer";
 import { ICreateMessage } from "@repo/types";
 
 class MessageService {
@@ -39,6 +39,8 @@ class MessageService {
   async getMessagesByChat(chatId: string) {
     const messages = await MessageModel.find({ chatId })
       .sort({ createdAt: 1 });
+      //produce message to kafka topic for real time update
+      await getMessagesByChat(chatId, messages)
     return messages;
   }
 

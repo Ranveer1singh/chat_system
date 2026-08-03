@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { io, Socket } from 'socket.io-client';
 import { useDispatch } from 'react-redux';
 import type { AppDispatch } from '../store';
-import { addMessage } from '../service/chat/reducer';
+import { addMessage } from '../service/message/reducer';
 import type { IMessage } from '@repo/types';
 
 let socket: Socket | null = null;
