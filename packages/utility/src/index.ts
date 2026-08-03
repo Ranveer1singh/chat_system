@@ -15,13 +15,21 @@ export class TokenValidationError extends Error {
 }
 
 export const getJwtSecret = (): string => {
-  const secret = process.env.JWT_SECRET;
+  const secret = process.env.JWT_SECRET?.trim();
 
   if (!secret) {
     throw new Error("JWT_SECRET must be configured");
   }
 
   return secret;
+};
+
+/**
+ * Call during service startup so missing JWT configuration fails fast instead
+ * of surfacing as an authentication error on the first protected request.
+ */
+export const validateJwtConfig = (): void => {
+  getJwtSecret();
 };
 
 export const extractBearerToken = (authorization?: string): string | null => {

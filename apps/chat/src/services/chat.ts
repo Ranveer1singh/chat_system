@@ -43,6 +43,16 @@ class ChatService {
     return chat;
   }
 
+  async getByIdForParticipant(id: string, userId: string) {
+    const chat = await ChatModel.findOne({ _id: id, participants: userId });
+    if (!chat) throw new Error("Chat not found or access denied");
+    return chat;
+  }
+
+  async assertParticipant(id: string, userId: string): Promise<void> {
+    await this.getByIdForParticipant(id, userId);
+  }
+
   async getByUserId(userId: string) {
     try {
       const pipeline: PipelineStage[] = [
@@ -92,20 +102,37 @@ class ChatService {
     }
   }
 
-  async update(id: string, updates: IUpdateChat) {
-    const chat = await GroupChatModel.findByIdAndUpdate(id, updates, {
-      new: true,
-      runValidators: true,
-    })
-      .populate("participants", "name email")
-      .populate("lastMessage");
+  async update(id: string, userId: string, updates: IUpdateChat) {
+    const chat = await GroupChatModel.findOne({
+      _id: id,
+      participants: userId,
+      admins: userId,
+    });
 
-    if (!chat) throw new Error("Chat not found or not a group chat");
+    if (!chat) throw new Error("Chat not found or access denied");
+
+    Object.assign(chat, updates);
+
+    const isStillParticipant = chat.participants.some((participant) =>
+      participant.toString() === userId
+    );
+    const isStillAdmin = chat.admins.some((admin) => admin.toString() === userId);
+    if (!isStillParticipant || !isStillAdmin) {
+      throw new Error("A group admin cannot remove their own access");
+    }
+
+    await chat.save();
+    await chat.populate("participants", "fullName userName");
+    await chat.populate("lastMessage");
     return chat;
   }
-  async delete(id: string) {
-    const deleted = await ChatModel.findByIdAndDelete(id);
-    if (!deleted) throw new Error("Chat not found");
+  async delete(id: string, userId: string) {
+    const deleted = await GroupChatModel.findOneAndDelete({
+      _id: id,
+      participants: userId,
+      admins: userId,
+    });
+    if (!deleted) throw new Error("Chat not found or access denied");
     return deleted;
   }
 }

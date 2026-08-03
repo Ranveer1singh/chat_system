@@ -4,6 +4,7 @@ import type { AuthUserPayload } from "@repo/utility";
 
 export interface AuthenticatedSocket extends Socket {
   user?: AuthUserPayload;
+  accessToken?: string;
 }
 
 /**
@@ -18,7 +19,9 @@ export const authenticateSocket = (socket: AuthenticatedSocket, next: (err?: Err
   }
 
   try {
-    socket.user = verifyAccessToken(extractBearerToken(token) ?? token);
+    const accessToken = extractBearerToken(token) ?? token;
+    socket.user = verifyAccessToken(accessToken);
+    socket.accessToken = accessToken;
     next();
   } catch {
     next(new Error("Authentication error: Invalid token"));

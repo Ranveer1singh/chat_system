@@ -2,7 +2,6 @@ import express, { Application, Request, Response } from "express";
 import morgan from "morgan"
 import dbConnnection from "./db"
 import appRouter from "../routes";
-import "dotenv/config"
 import { createProducer } from "../kafka/producer";
 const app = express();
 dbConnnection();

@@ -1,4 +1,6 @@
+import "./config/env";
 import Server from "./utils/server";
+import { validateJwtConfig } from "@repo/utility";
 
 
 class ChatApplication{
@@ -9,4 +11,5 @@ class ChatApplication{
 }
 
 const chatApplication = new ChatApplication
+validateJwtConfig();
 chatApplication.run()

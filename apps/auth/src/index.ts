@@ -1,5 +1,6 @@
 import "./config/env";
 import Server from "./utility/server";
+import { validateJwtConfig } from "@repo/utility";
 
 
 class AuthApplication {
@@ -10,4 +11,5 @@ class AuthApplication {
 }
 
 const authApplication = new AuthApplication
+validateJwtConfig();
 authApplication.run()
